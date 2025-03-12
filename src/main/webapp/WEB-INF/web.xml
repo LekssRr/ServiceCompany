@@ -6,28 +6,26 @@
     <display-name>Test</display-name>
 
     <servlet>
-        <servlet-name>AddAutoServlet</servlet-name>
-        <servlet-class>ru.warrantyauto.servlet.AutoServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddAutoServlet</servlet-name>
-        <url-pattern>/AddAuto</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AddSeviceCompanyServlet</servlet-name>
+        <servlet-name>ServiceCompanyServlet</servlet-name>
         <servlet-class>ru.warrantyauto.servlet.ServiceCompanyServlet</servlet-class>
+        <init-param>
+            <param-name>jdbc-driver</param-name>
+            <param-value>sun.jdbc.odbc.JdbcOdbcDriver</param-value>
+        </init-param>
     </servlet>
+
     <servlet-mapping>
-        <servlet-name>AddSeviceCompanyServlet</servlet-name>
-        <url-pattern>/AddServiceCompanyServlet</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>MainServlet</servlet-name>
-        <servlet-class>ru.warrantyauto.servlet.MainServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MainServlet</servlet-name>
-        <url-pattern>/Main</url-pattern>
+        <servlet-name>ServiceCompanyServlet</servlet-name>
+        <url-pattern>/ServiceCompany</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Auto</servlet-name>
+        <servlet-class>ru.warrantyauto.servlet.AutoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Auto</servlet-name>
+        <url-pattern>/Auto</url-pattern>
+    </servlet-mapping>
 </web-app>
