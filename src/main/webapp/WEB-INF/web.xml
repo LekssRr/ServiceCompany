@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+    <display-name>Test</display-name>
+
+    <servlet>
+        <servlet-name>AddAutoServlet</servlet-name>
+        <servlet-class>ru.warrantyauto.servlet.AutoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddAutoServlet</servlet-name>
+        <url-pattern>/AddAuto</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddSeviceCompanyServlet</servlet-name>
+        <servlet-class>ru.warrantyauto.servlet.ServiceCompanyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddSeviceCompanyServlet</servlet-name>
+        <url-pattern>/AddServiceCompanyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>MainServlet</servlet-name>
+        <servlet-class>ru.warrantyauto.servlet.MainServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainServlet</servlet-name>
+        <url-pattern>/Main</url-pattern>
+    </servlet-mapping>
+
+</web-app>
