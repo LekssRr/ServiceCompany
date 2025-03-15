@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.warrantyauto.entities.Auto;
-import ru.warrantyauto.model.Model;
+import ru.warrantyauto.database.DataBase;
 import ru.warrantyauto.sevice.AutoService;
 
 import java.io.IOException;
@@ -27,16 +27,23 @@ public class AutoServlet extends HttpServlet {
             String url = request.getRequestURI();
             Map<String, String[]> param = request.getParameterMap();
             String[] urlRequest = url.split("/");
-
-            if(urlRequest[2].equals("POST"))
+            if (urlRequest[2].equals("PUT"))
+            {
+                this.doPost(request,response);
+            }else if(urlRequest[2].equals("POST"))
             {
                 this.doPost(request,response);
             } else if (urlRequest[2].equals("DELETE")) {
-
+                this.doPost(request,response);
             } else if(urlRequest[2].equals("GET"))
             {
+                for (int i = 0; i<= autoService.getAllAuto().size()-1; i++)
+                {
+                    response.getWriter().write(autoService.getAllAuto().get(i).getVin() + " "+ autoService.getAllAuto().get(i).getNameServiceCompany() + "\n");
+                }
                 if(urlRequest[3].equals("vin"))
                 {
+                    response.getWriter().write(autoService.getAuto(urlRequest[4]).getVin() + " " + autoService.getAuto(urlRequest[4]).getNameServiceCompany());
                     response.getWriter().write("get vin");
                 }
                 else if (urlRequest[3].equals("sk"))
@@ -45,11 +52,13 @@ public class AutoServlet extends HttpServlet {
                 }
                 else if(urlRequest[3].equals("allCar"))
                 {
-                    for (int i = 0; i<=Model.getInstance().getAuto().size()-1; i++)
+                    for (int i = 0; i<= DataBase.getInstance().getAuto().size()-1; i++)
                     {
-                        response.getWriter().write(Model.getInstance().getAuto().get(i).getName() + "\n");
+                        response.getWriter().write(DataBase.getInstance().getAuto().get(i).getVin() + DataBase.getInstance().getAuto().get(i).getNameServiceCompany() + "\n");
+
                     }
                 }
+
             }
     }
     @Override
@@ -58,7 +67,8 @@ public class AutoServlet extends HttpServlet {
     {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
-
+    if(urlRequest[2].equals("POST"))
+    {
         if (urlRequest[3].equals("vin"))
         {
             if (urlRequest[4].length() == 17)
@@ -87,5 +97,21 @@ public class AutoServlet extends HttpServlet {
         {
             response.getWriter().write("Error" + "\n");
         }
+    }
+    else if (urlRequest[2].equals("DELETE"))
+    {
+        if(urlRequest.length >=4)
+        {
+            response.getWriter().print(autoService.deleteAuto(urlRequest[3]));
+        }
+        else
+        {
+
+        }
+    }else if (urlRequest[2].equals("PUT"))
+    {
+
+    }
+
     }
 }

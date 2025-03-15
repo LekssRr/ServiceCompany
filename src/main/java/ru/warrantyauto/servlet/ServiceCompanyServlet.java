@@ -27,6 +27,7 @@ public class ServiceCompanyServlet extends HttpServlet {
         {
             if(urlRequest.length == 3)
             {
+                //response.getWriter().write(DataBase.getPostgresConnection().getCatalog());
                 response.getWriter().write(serviceCompanyService.getAllServiceCompany().toString());
             }
             else

@@ -1,32 +1,54 @@
-package ru.warrantyauto.model;
+package ru.warrantyauto.database;
 
 import ru.warrantyauto.entities.Auto;
 import ru.warrantyauto.entities.ServiceCompany;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Model {
-    private static Model instance = new Model();
+public class DataBase {
+    private static DataBase instance = new DataBase();
 
     private List<Auto> auto;
     private List<ServiceCompany> serviceCompans;
     private Set<String> vinList;
     private Set<String> nameServiceCompany;
     private HashMap<String, String> vinAndServiceCompany;
+    
 
-    public static Model getInstance() {
+    public static DataBase getInstance() {
         return instance;
     }
 
-    private Model() {
+    private DataBase() {
         this.auto = new ArrayList<>();
         this.vinList = new HashSet<>();
         this.serviceCompans = new ArrayList<>();
         this.nameServiceCompany = new HashSet<>();
         this.vinAndServiceCompany = new HashMap<>();
-    }
+        //getPostgresConnection().getCatalog()
 
+    }
+    public static Connection getPostgresConnection()
+    {
+        try {
+            DriverManager.registerDriver((Driver)
+                    Class.forName("org.postgresql.Driver").newInstance());
+
+            String url = "jdbc:postgresql://localhost:5432/auto_dealer";
+            String user = "postgres";
+            String password = "2112";
+            Connection connection = DriverManager.getConnection(url, user, password);
+            return connection;
+        } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void addServiceCompans(ServiceCompany newServiceCompan)
     {
         serviceCompans.add(newServiceCompan);
@@ -76,7 +98,7 @@ public class Model {
     }
     public List<String> getStringAuto() {
         return auto.stream()
-                .map(Auto::getName)
+                .map(Auto::getVin)
                 .collect(Collectors.toList());
     }
     public boolean deleteServiceCompany(String nameServiceCompany)

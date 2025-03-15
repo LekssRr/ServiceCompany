@@ -1,11 +1,10 @@
 package ru.warrantyauto.entities;
 
-public class Auto {
+public class Auto extends Entity{
 
     private String vinCode;
     private String nameServiceCompany;
     private ServiceCompany serviceCompan;
-
     public Auto(String newVinCode, String newNameServiceCompany, ServiceCompany newServiceCompan)
     {
         this.vinCode = newVinCode;
@@ -13,7 +12,7 @@ public class Auto {
         this.serviceCompan = newServiceCompan;
     }
 
-    public String getName()
+    public String getVin()
     {
         return vinCode;
     }
@@ -25,7 +24,7 @@ public class Auto {
     {
         return serviceCompan;
     }
-    String getNameServiceCompany()
+    public String getNameServiceCompany()
     {
         return serviceCompan.getName();
     }

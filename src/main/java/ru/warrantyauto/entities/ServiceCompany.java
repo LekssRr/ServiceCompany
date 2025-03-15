@@ -2,7 +2,7 @@ package ru.warrantyauto.entities;
 
 import java.util.ArrayList;
 
-public class ServiceCompany {
+public class ServiceCompany extends Entity {
 
     String name;
     ArrayList<Auto> allAuto = new ArrayList<>();
@@ -20,6 +20,10 @@ public class ServiceCompany {
     {
         allAuto.add(newAuto);
         allVin.add(newAuto.getVinCode());
+    }
+    public void setAllVin(ArrayList<String> newVin)
+    {
+        allVin.addAll(newVin);
     }
     public ArrayList<String> allVinAuto()
     {

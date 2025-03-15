@@ -1,7 +1,6 @@
 package ru.warrantyauto.sevice;
 
 import ru.warrantyauto.entities.ServiceCompany;
-import ru.warrantyauto.model.Model;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
 
 import java.util.List;
@@ -11,8 +10,7 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
     @Override
     public void addServiceCompany(String nameServiceCompany)
     {
-        Model.getInstance().addServiceCompans(new ServiceCompany(nameServiceCompany));
-        //serviceCompanyRepository.addServiceCompanyRepository(new ServiceCompany(nameServiceCompany));
+        serviceCompanyRepository.addServiceCompanyRepository(new ServiceCompany(nameServiceCompany));
     }
     @Override
     public boolean deleteServiceCompany(String nameServiceCompany)
