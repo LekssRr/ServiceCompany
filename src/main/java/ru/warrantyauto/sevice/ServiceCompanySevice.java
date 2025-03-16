@@ -46,11 +46,7 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
     {
         return serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompany(nameServiceCompany)).toString();
     }
-    @Override
-    public String getNameServiceCompany(String nameServiceCompany)
-    {
-        return serviceCompanyRepository.getServiceCompanyToName(nameServiceCompany).getName();
-    }
+
     @Override
     public List<String> getAllServiceCompany() {
 
@@ -71,10 +67,6 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
 
 interface GetServiceCompany{
     default String getAllVinServiceCompany(String nameServiceCompany)
-    {
-        return null;
-    }
-    default String getNameServiceCompany(String nameServiceCompany)
     {
         return null;
     }

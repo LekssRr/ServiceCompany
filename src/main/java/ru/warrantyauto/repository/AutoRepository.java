@@ -19,7 +19,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     @Override
     public boolean create(Auto auto){
         boolean result = false;
-        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -35,15 +34,9 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
         return result;
     };
     @Override
-    public Auto read(String vin)
-    {
-        return null;
-    }
-    @Override
     public boolean update(Auto auto)
     {
         boolean result = false;
-        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -61,7 +54,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     @Override
     public boolean delete(Auto auto)
     {
-        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -77,7 +69,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     public String get(String vin)
     {
         String res = null;
-        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -97,7 +88,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     @Override
     public List<String> getAllAutoServiceCompany()
     {
-        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -120,7 +110,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     @Override
     public List<String> getAllAutoVin() {
 
-        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -142,7 +131,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     public boolean deleteAll()
     {
         boolean result = false;
-        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
 
@@ -156,22 +144,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
 
         }
         return result;
-    }
-    public static Connection getPostgresConnection()
-    {
-        try {
-            DriverManager.registerDriver((Driver)
-                    Class.forName("org.postgresql.Driver").newInstance());
-
-            String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-            String user = "postgres";
-            String password = "2112";
-            connection = DriverManager.getConnection(url, user, password);
-            return connection;
-        } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public boolean doesCarToServiceCompanyRepository(Auto auto)

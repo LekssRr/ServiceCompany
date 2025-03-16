@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.warrantyauto.entities.Auto;
 import ru.warrantyauto.entities.ServiceCompany;
+import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
 import ru.warrantyauto.sevice.AutoService;
 
@@ -88,6 +89,17 @@ public class AutoServiceTest {
         testService.deleteAuto("33333333334333331");
         testService.deleteAuto("33333333333333338");
         serviceCompanyRepository.deleteAllServiceCompany();
-
+    }
+    @Test
+    void getServiceCompanyToVinTest()
+    {
+        AutoService autoService = new AutoService();
+        ServiceCompany serviceCompany = new ServiceCompany("SC-5");
+        ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
+        serviceCompanyRepository.create(serviceCompany);
+        autoService.addAuto("11111111111111115", "SC-5");
+        Assertions.assertEquals(autoService.getServiceCompanyToVin("11111111111111115"), "SC-5");
+        autoService.deleteAuto("11111111111111115");
+        serviceCompanyRepository.deleteAllServiceCompany();
     }
 }

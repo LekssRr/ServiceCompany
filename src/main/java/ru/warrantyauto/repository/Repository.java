@@ -6,10 +6,6 @@ public interface Repository <Entity, Key>{
     default boolean create(Entity entity){
         return false;
     };
-    default Entity read(Key key)
-    {
-        return null;
-    }
     default boolean update(Entity entity)
     {
         return false;

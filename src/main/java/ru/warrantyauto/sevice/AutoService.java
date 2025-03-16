@@ -34,11 +34,12 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
         }
         return res;
     }
+
     @Override
-    public Auto getAuto(String vin)
-    {
-        return new Auto(vin,autoRepository.get(vin), new ServiceCompany(autoRepository.get(vin)));
+    public String getServiceCompanyToVin(String vin) {
+        return autoRepository.get(vin);
     }
+
     @Override
     public List<String> getAllAuto(){
         List<String> result = new ArrayList<>(autoRepository.getAllAutoVin());
@@ -66,14 +67,18 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
 
     @Override
     public boolean updateAuto(String vin, String newNameServiceCompany) {
+        String deleteVinSC = this.getServiceCompanyToVin(vin);
+        Auto deleteAuto = new Auto(vin, deleteVinSC, new ServiceCompany(deleteVinSC));
         Auto updateAuto = new Auto(vin, newNameServiceCompany, new ServiceCompany(newNameServiceCompany));
+        serviceCompanyRepository.addVinToServiceCompany(updateAuto);
+        serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.update(updateAuto);
     }
 }
 
 
 interface GetInfoAuto{
-    Auto getAuto(String vin);
+    String getServiceCompanyToVin(String vin);
     List<String> getAllAuto();
     boolean doesCarExist(String autoVin);
     boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany);

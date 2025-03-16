@@ -36,24 +36,14 @@ public class AutoServlet extends HttpServlet {
                 this.doPost(request,response);
             } else if(urlRequest[2].equals("GET"))
             {
-                for (int i = 0; i<= autoService.getAllAuto().size()-1; i++)
+                if(urlRequest.length == 3)
                 {
-                   // response.getWriter().write(autoService.getAllAuto().get(i).getVin() + " "+ autoService.getAllAuto().get(i).getNameServiceCompany() + "\n");
+                    response.getWriter().write(autoService.getAllAuto().toString());
                 }
                 if(urlRequest[3].equals("vin"))
                 {
-                    response.getWriter().write(autoService.getAuto(urlRequest[4]).getVin() + " " + autoService.getAuto(urlRequest[4]).getNameServiceCompany());
-                    response.getWriter().write("get vin");
+                    response.getWriter().write(autoService.getServiceCompanyToVin(urlRequest[4]));
                 }
-                else if (urlRequest[3].equals("sk"))
-                {
-                    response.getWriter().write("get SK");
-                }
-                else if(urlRequest[3].equals("allCar"))
-                {
-                        response.getWriter().write(autoService.getAllAuto()+ "\n");
-                }
-
             }
     }
     @Override
@@ -105,8 +95,7 @@ public class AutoServlet extends HttpServlet {
         }
     }else if (urlRequest[2].equals("PUT"))
     {
-
+        response.getWriter().print(autoService.updateAuto(urlRequest[3], urlRequest[4]));
     }
-
     }
 }
