@@ -2,7 +2,6 @@ package ru.warrantyauto.repository;
 
 import ru.warrantyauto.entities.Auto;
 import ru.warrantyauto.entities.ServiceCompany;
-import ru.warrantyauto.database.DataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -124,7 +123,6 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
         getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
-
             Statement statement = conn.createStatement();
             String sql= "SELECT \"Vin\" FROM \"Auto\"";
             ResultSet rs = statement.executeQuery(sql);
@@ -133,6 +131,7 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
             {
                 result.add(rs.getString("Vin"));
             }
+            System.out.println(result);
             return result;
         }
         catch(Exception ex){
@@ -175,40 +174,18 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
         return null;
     }
 
-
-
-
-
-
-
-
-public ServiceCompanyRepository getServiceCompanyRepository()
-{
-    return serviceCompanyRepository;
-}
-
-    public void addAutoToRepository(String newVin, String nameServiceCompany)
+    public boolean doesCarToServiceCompanyRepository(Auto auto)
     {
-        ServiceCompany currentServiceCompany = serviceCompanyRepository.getServiceCompanyToName(nameServiceCompany);
-        Auto newAuto = new Auto(newVin, nameServiceCompany, currentServiceCompany);
-        DataBase.getInstance().add(newAuto, nameServiceCompany);
-    }
-    public boolean doesCarExistToRepository(String autoVin)
-    {
-        return DataBase.getInstance().addVin(autoVin);
-    }
-    public boolean doesCarToServiceCompanyRepository(String autoVin)
-    {
-        return serviceCompanyRepository.doesCarToServiceCompanyRepository(autoVin);
-    }
-    public void deleteAutoFromServiceCompany(String nameServiceCompany)
-    {
-        for(int i = 0; i<= DataBase.getInstance().getAuto().size()-1; i++)
+        ArrayList<String> allAutoVin = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompany(auto.getNameServiceCompany())));
+        System.out.println(allAutoVin);
+        boolean result = false;
+        for(int i =0; i<=allAutoVin.size()-1; i++)
         {
-            if (DataBase.getInstance().getAuto().get(i).getVin().equals(nameServiceCompany))
+            if (allAutoVin.get(i).equals(auto.getVin()))
             {
-                DataBase.getInstance().getAuto().remove(i);
+                result = true;
             }
         }
+        return result;
     }
 }

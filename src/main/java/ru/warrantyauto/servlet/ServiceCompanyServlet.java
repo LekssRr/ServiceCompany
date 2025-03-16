@@ -30,9 +30,8 @@ public class ServiceCompanyServlet extends HttpServlet {
                 //response.getWriter().write(DataBase.getPostgresConnection().getCatalog());
                 response.getWriter().write(serviceCompanyService.getAllServiceCompany().toString());
             }
-            else
+            else if(urlRequest.length >=4)
             {
-                response.getWriter().write(serviceCompanyService.getNameServiceCompany(urlRequest[3]));
                 response.getWriter().write(serviceCompanyService.getAllVinServiceCompany(urlRequest[3]));
             }
         } else if (urlRequest[2].equals("DELETE")) {
@@ -46,7 +45,7 @@ public class ServiceCompanyServlet extends HttpServlet {
 
         if(urlRequest[2].equals("POST"))
         {
-            if(serviceCompanyService.addServiceCompanyName(urlRequest[3]))
+            if(serviceCompanyService.addServiceCompany(urlRequest[3]))
             {
                 response.getWriter().write("AddSk" + "\n");
                 serviceCompanyService.addServiceCompany(urlRequest[3]);
@@ -57,7 +56,7 @@ public class ServiceCompanyServlet extends HttpServlet {
             }
         } else if (urlRequest[2].equals("DELETE")) {
 
-            if(!serviceCompanyService.addServiceCompanyName(urlRequest[3]))
+            if(!serviceCompanyService.addServiceCompany(urlRequest[3]))
             {
                 response.getWriter().write("Delete SC" + "\n");
                 serviceCompanyService.deleteServiceCompany(urlRequest[3]);
@@ -67,7 +66,6 @@ public class ServiceCompanyServlet extends HttpServlet {
                 response.getWriter().write("NotSK" + "\n");
             }
         }
-
     }
 
 }

@@ -6,24 +6,33 @@ import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto {
-    AutoRepository autoRepository = new AutoRepository();
-
+    final AutoRepository autoRepository = new AutoRepository();
+    final ServiceCompanyRepository  serviceCompanyRepository = new ServiceCompanyRepository();
     @Override
     public boolean deleteAuto(String vin)
     {
-        System.out.println(autoRepository.get(vin));
         Auto deleteAuto = new Auto(vin, autoRepository.get(vin), new ServiceCompany(autoRepository.get(vin)));
+        serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.delete(deleteAuto);
     }
     @Override
     public boolean addAuto(String newVin, String nameServiceCompany)
     {
-        autoRepository.addAutoToRepository(newVin, nameServiceCompany);
-        //ServiceCompany currentServiceCompany = autoRepository.getServiceCompanyRepository().getServiceCompanyToName(nameServiceCompany);
-        return autoRepository.create(new Auto(newVin, nameServiceCompany, new ServiceCompany(nameServiceCompany)));
+        boolean res = false;
+        ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
+        Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
+        if(!setServiceCompany.add(nameServiceCompany))
+        {
+            Auto newAuto = new Auto(newVin, nameServiceCompany, new ServiceCompany(nameServiceCompany));
+            autoRepository.create(newAuto);
+            res = serviceCompanyRepository.addVinToServiceCompany(newAuto);
+        }
+        return res;
     }
     @Override
     public Auto getAuto(String vin)
@@ -31,23 +40,28 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
         return new Auto(vin,autoRepository.get(vin), new ServiceCompany(autoRepository.get(vin)));
     }
     @Override
-    public List<Auto> getAllAuto(){
-        List<Auto> result = new ArrayList<>();
-        for(int i = 0; i<= autoRepository.getAllAutoVin().size()-1; i++)
-        {
-            result.add(new Auto(autoRepository.getAllAutoVin().get(i), autoRepository.getAllAutoServiceCompany().get(i), new ServiceCompany(autoRepository.getAllAutoServiceCompany().get(i))));
-        }
+    public List<String> getAllAuto(){
+        List<String> result = new ArrayList<>(autoRepository.getAllAutoVin());
         return result;
     };
     @Override
     public boolean doesCarExist(String autoVin)
     {
-        return autoRepository.doesCarExistToRepository(autoVin);
+        boolean resulat = false;
+        for(int i = 0; i<=autoRepository.getAllAutoVin().size()-1; i++)
+        {
+            if(autoRepository.getAllAutoVin().get(i).equals(autoVin))
+            {
+                resulat = true;
+            }
+        }
+        return resulat;
     }
     @Override
-    public boolean doesCarToServiceCompany(String autoVin)
+    public boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany)
     {
-        return autoRepository.doesCarToServiceCompanyRepository(autoVin);
+        Auto newAuto = new Auto(autoVin, nameServiceCompany, new ServiceCompany(nameServiceCompany));
+        return autoRepository.doesCarToServiceCompanyRepository(newAuto);
     }
 
     @Override
@@ -57,11 +71,12 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
     }
 }
 
+
 interface GetInfoAuto{
     Auto getAuto(String vin);
-    List<Auto> getAllAuto();
+    List<String> getAllAuto();
     boolean doesCarExist(String autoVin);
-    boolean doesCarToServiceCompany(String autoVin);
+    boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany);
 }
 interface DeleteAuto {
     boolean deleteAuto(String vin);

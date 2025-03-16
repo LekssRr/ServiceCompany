@@ -2,11 +2,9 @@ package ru.warrantyauto.repository;
 
 import ru.warrantyauto.entities.Auto;
 import ru.warrantyauto.entities.ServiceCompany;
-import ru.warrantyauto.database.DataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,16 +52,15 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
             String serviceCompanyName = serviceCompany.getName();
             ArrayList<String> newVinListServiceCompany = new ArrayList<>();
             newVinListServiceCompany.addAll(serviceCompany.allVinAuto());
+
             for (int i = 0; i<=newVinListServiceCompany.size()-1; i++)
             {
                 newVinListServiceCompany.set(i, "\"" + newVinListServiceCompany.get(i) + "\"");
             }
+
             String updateSQLVinList = newVinListServiceCompany.toString().replace(']', '}');
             updateSQLVinList = updateSQLVinList.replace('[', '{');
-            System.out.println(updateSQLVinList);
-
             String sql = "UPDATE \"ServiceCompany\" SET \"VinList\" = '" + updateSQLVinList +"'" + "WHERE \"ServiceCompany\" = '" + serviceCompanyName + "'\n";
-            System.out.println(sql);
             statement.executeUpdate(sql);
             result = true;
         }
@@ -81,7 +78,6 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
             Statement statement = conn.createStatement();
             String serviceCompanyName = serviceCompany.getName();
             String sql = "DELETE FROM \"ServiceCompany\" WHERE \"ServiceCompany\" =" + "'" + serviceCompanyName + "'";
-            System.out.println(sql);
             statement.executeUpdate(sql);
             result = true;
         }
@@ -121,6 +117,48 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
             Statement statement = conn.createStatement();
             String nameServiceCompany = serviceCompany.getName();
             String sql= "SELECT \"VinList\" FROM \"ServiceCompany\" WHERE \"ServiceCompany\" = '" + nameServiceCompany + "'";
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next())
+            {
+                String resString = rs.getArray(1).toString();
+                resString = resString.replace('{', ' ');
+                resString = resString.replace('}', ' ');
+                resString = resString.trim();
+                String[] arrayList = resString.split(",");
+                Collections.addAll(res, arrayList);
+            }
+        }
+        catch(Exception ex){
+        }
+        return res;
+    }
+    public boolean addAutoToServiceCompany(Auto newAuto)
+    {
+        boolean res = false;
+        try(Connection conn = DriverManager.getConnection(url, user, password))
+        {
+            Statement statement = conn.createStatement();
+            String nameServiceCompany = newAuto.getNameServiceCompany();
+            List<String> vinToServicCompany = this.getAllAutoToServiceCompany(new ServiceCompany(nameServiceCompany));
+            vinToServicCompany.add(newAuto.getVin());
+            this.delete(new ServiceCompany(nameServiceCompany));
+            this.create(new ServiceCompany(nameServiceCompany));
+            res = true;
+            //ResultSet rs = statement.executeQuery(sql);
+        }
+        catch(Exception ex){
+        }
+        return res;
+    }
+    @Override
+    public List<String> getAllServiceCompany() {
+        List<String> res = new ArrayList<>();
+        String stringResult = null;
+        getPostgresConnection();
+        try(Connection conn = DriverManager.getConnection(url, user, password))
+        {
+            Statement statement = conn.createStatement();
+            String sql= "SELECT \"ServiceCompany\" FROM \"ServiceCompany\"";
             System.out.println(sql);
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next())
@@ -132,95 +170,84 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
                 String[] arrayList = resString.split(",");
                 Collections.addAll(res, arrayList);
             }
-
-
         }
         catch(Exception ex){
-
         }
         return res;
-
     }
-
-
-
-
-
-
-
-
-
-    public String getNameServiceCompanyRepository(String nameServiceCompany)
+    public boolean deleteAllServiceCompany()
     {
-        for (int i = 0; i<= DataBase.getInstance().getServiceCompany().size()-1; i++)
+        boolean res = false;
+        try(Connection conn = DriverManager.getConnection(url, user, password))
         {
-            if(DataBase.getInstance().getServiceCompany().get(i).equals(nameServiceCompany))
-            {
-                return DataBase.getInstance().getServiceCompans().get(i).toString();
-            }
+            Statement statement = conn.createStatement();
+            String sql= "DELETE FROM \"ServiceCompany\"";
+            res = true;
+            ResultSet rs = statement.executeQuery(sql);
         }
-        return null;
-    }
-
-    public String getAllVinServiceCompanyRepository(String nameServiceCompany)
-    {
-        for (int i = 0; i<= DataBase.getInstance().getServiceCompany().size()-1; i++)
-        {
-            if(DataBase.getInstance().getServiceCompany().get(i).equals(nameServiceCompany))
-            {
-                return DataBase.getInstance().getServiceCompans().get(i).allVinAuto().toString();
-            }
+        catch(Exception ex){
         }
-        return null;
-    }
-
-    public void addServiceCompanyRepository(ServiceCompany serviceCompany)
-    {
-        DataBase.getInstance().addServiceCompans(serviceCompany);
-    }
-
-    public boolean doesCarToServiceCompanyRepository(String autoVin)
-    {
-        return !DataBase.getInstance().addServiceCompanyString(autoVin);
+        return res;
     }
 
     public ServiceCompany getServiceCompanyToName(String nameServiceCompany)
     {
-
         ServiceCompany result = null;
-
-        for(int i = 0; i<= DataBase.getInstance().getServiceCompans().size()-1; i++)
+        for(int i = 0; i<= this.getAllServiceCompany().size()-1; i++)
         {
-            if(DataBase.getInstance().getServiceCompans().get(i).getName().equals(nameServiceCompany))
-            {
-                result = DataBase.getInstance().getServiceCompans().get(i);
-                return result;
-            }
+            getAllServiceCompany().get(i).equals(nameServiceCompany);
+            result = new ServiceCompany(nameServiceCompany);
         }
         return result;
     }
-
-    public List<String> getAllServiceCompanyToRepository() {
-
-        return DataBase.getInstance().getServiceCompany();
-    }
-
-    public boolean addServiceCompanySet(String newServiceCompany)
+    public boolean addVinToServiceCompany(Auto newAuto)
     {
-        return DataBase.getInstance().addServiceCompanyString(newServiceCompany);
-    }
-
-    public boolean deleteServiceCompanyRepository(String deleteCompany)
-    {
-        for(int i = 0; i<= DataBase.getInstance().getAuto().size()-1; i++)
+        ServiceCompany cahsServiceCompany = new ServiceCompany(newAuto.getNameServiceCompany());
+        ArrayList<String> cashVin = new ArrayList<>(this.getAllAutoToServiceCompany(cahsServiceCompany));
+        this.delete(getServiceCompanyToName(newAuto.getNameServiceCompany()));
+        ArrayList<String> newVinList = new ArrayList<>();
+        if(cashVin.size()!=0)
         {
-            if (DataBase.getInstance().getAuto().get(i).getNameServiceCompany().equals(deleteCompany))
+            if(cashVin.get(0).equals(""))
             {
-                DataBase.getInstance().getAuto().remove(i);
+                newVinList.add(newAuto.getVin());
+            }
+            else
+            {
+                for(int i = 0; i<=cashVin.size()-1; i++)
+                {
+                    if(!cashVin.get(i).equals(""))
+                    {
+                        newVinList.add(cashVin.get(i));
+                    }
+                }
+                newVinList.add(newAuto.getVin());
             }
         }
-        return DataBase.getInstance().deleteServiceCompany(deleteCompany);
+        else
+        {
+            newVinList.add(newAuto.getVin());
+        }
+        cahsServiceCompany.setAllVin(newVinList);
+        return this.create(cahsServiceCompany);
     }
-
+    public boolean deleteVinToServiceCompany(Auto newAuto) {
+        boolean result =false;
+        ServiceCompany cahsServiceCompany = new ServiceCompany(newAuto.getNameServiceCompany());
+        ArrayList<String> cashVin = new ArrayList<>(this.getAllAutoToServiceCompany(cahsServiceCompany));
+        this.delete(getServiceCompanyToName(newAuto.getNameServiceCompany()));
+        ArrayList<String> newVinList = new ArrayList<>();
+        for(int i = 0; i<=cashVin.size()-1; i++)
+        {
+            if(cashVin.get(i).equals(newAuto.getVin()))
+            {
+                cashVin.remove(i);
+                result = true;
+            }
+        }
+        cahsServiceCompany.setAllVin(cashVin);
+        this.create(cahsServiceCompany);
+        return result;
+    }
 
 }

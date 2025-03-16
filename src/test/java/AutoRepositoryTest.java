@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 import ru.warrantyauto.entities.Auto;
 import ru.warrantyauto.entities.ServiceCompany;
 import ru.warrantyauto.repository.AutoRepository;
+import ru.warrantyauto.repository.ServiceCompanyRepository;
+import ru.warrantyauto.sevice.AutoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,4 +93,18 @@ public class AutoRepositoryTest {
         Assertions.assertEquals(autoRepository.update(test1), true);
         autoRepository.delete(test1);
     }
+    @Test
+    void doesCarToServiceCompanyRepositoryTest()
+    {
+        AutoRepository testRepository = new AutoRepository();
+        AutoService testService = new AutoService();
+        ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
+        ServiceCompany testServiceCompany = new ServiceCompany("SC-222");
+        serviceCompanyRepository.create(testServiceCompany);
+        testService.addAuto("33333333333333331", "SC-222");
+        Auto testAuto = new Auto("33333333333333331", "SC-222", new ServiceCompany("SC-222"));
+        Assertions.assertEquals(testRepository.doesCarToServiceCompanyRepository(testAuto), true);
+
+    }
+
 }

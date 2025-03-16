@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.warrantyauto.entities.Auto;
-import ru.warrantyauto.database.DataBase;
 import ru.warrantyauto.sevice.AutoService;
 
 import java.io.IOException;
@@ -39,7 +38,7 @@ public class AutoServlet extends HttpServlet {
             {
                 for (int i = 0; i<= autoService.getAllAuto().size()-1; i++)
                 {
-                    response.getWriter().write(autoService.getAllAuto().get(i).getVin() + " "+ autoService.getAllAuto().get(i).getNameServiceCompany() + "\n");
+                   // response.getWriter().write(autoService.getAllAuto().get(i).getVin() + " "+ autoService.getAllAuto().get(i).getNameServiceCompany() + "\n");
                 }
                 if(urlRequest[3].equals("vin"))
                 {
@@ -52,11 +51,7 @@ public class AutoServlet extends HttpServlet {
                 }
                 else if(urlRequest[3].equals("allCar"))
                 {
-                    for (int i = 0; i<= DataBase.getInstance().getAuto().size()-1; i++)
-                    {
-                        response.getWriter().write(DataBase.getInstance().getAuto().get(i).getVin() + DataBase.getInstance().getAuto().get(i).getNameServiceCompany() + "\n");
-
-                    }
+                        response.getWriter().write(autoService.getAllAuto()+ "\n");
                 }
 
             }
@@ -74,9 +69,9 @@ public class AutoServlet extends HttpServlet {
             if (urlRequest[4].length() == 17)
             {
 
-                if (autoService.doesCarExist(urlRequest[4]))
+            if (!autoService.doesCarExist(urlRequest[4]))
                 {
-                    if (autoService.doesCarToServiceCompany(urlRequest[5]))
+                    if (!autoService.doesCarToServiceCompany(urlRequest[4], urlRequest[5]))
                     {
                         response.getWriter().write("The vehicle has been successfully added to the database." + urlRequest[5] + "\n");
                         autoService.addAuto(urlRequest[4], urlRequest[5]);
