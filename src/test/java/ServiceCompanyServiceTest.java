@@ -26,6 +26,7 @@ public class ServiceCompanyServiceTest {
         testServiceCompanyRepository.delete(new ServiceCompany("SC-7"));
         testServiceCompanyRepository.delete(new ServiceCompany("SC-5"));
         testServiceCompanyRepository.delete(new ServiceCompany("SC-2"));
+        testServiceCompanyRepository.deleteAllServiceCompany();
     }
     @Test
     void deleteServiceCompany()
@@ -43,6 +44,7 @@ public class ServiceCompanyServiceTest {
         Assertions.assertEquals(testServiceCompanyService.deleteServiceCompany("SC-1"), false);
         testServiceCompanyService.deleteServiceCompany("SC-2");
         testServiceCompanyService.deleteServiceCompany("SC-5");
+        testServiceCompanyRepository.deleteAllServiceCompany();
     }
     @Test
     void updateServiceCompanyServiceTest()
@@ -57,6 +59,7 @@ public class ServiceCompanyServiceTest {
         test.add("tes2");
         sc.setAllVin(test);
         Assertions.assertEquals(testServiceCompanyService.updateServiceCompany("SC-7"), true);
+        testServiceCompanyRepository.deleteAllServiceCompany();
     }
 
 }

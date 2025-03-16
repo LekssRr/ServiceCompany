@@ -19,6 +19,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean create(ServiceCompany serviceCompany)
     {
         boolean result = false;
+        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -85,7 +86,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
 
 
 
-    public static Connection getPostgresConnection()
+    private static Connection getPostgresConnection()
     {
         try {
             DriverManager.registerDriver((Driver)
@@ -108,6 +109,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
 
         List<String> res = new ArrayList<>();
         String stringResult = null;
+        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -131,6 +133,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean addAutoToServiceCompany(Auto newAuto)
     {
         boolean res = false;
+        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -150,6 +153,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public List<String> getAllServiceCompany() {
         List<String> res = new ArrayList<>();
         String stringResult = null;
+        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();
@@ -173,6 +177,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean deleteAllServiceCompany()
     {
         boolean res = false;
+        getPostgresConnection();
         try(Connection conn = DriverManager.getConnection(url, user, password))
         {
             Statement statement = conn.createStatement();

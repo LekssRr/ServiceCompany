@@ -11,6 +11,10 @@ public class ServiceCompany extends Entity {
     public ServiceCompany(String newName)
     {
         this.name = newName;
+        for(int i = 0; i<=allVin.size()-1; i++)
+        {
+            allAuto.add(new Auto(allVin.get(i), this.getName(), this));
+        }
     }
     public String getName()
     {

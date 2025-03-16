@@ -82,6 +82,7 @@ public class AutoRepositoryTest {
         Auto test = new Auto("11111111111111115", "SC-5", new ServiceCompany("SC-5"));
         autoRepository.create(test);
         Assertions.assertEquals(autoRepository.delete(test), true);
+        autoRepository.deleteAll();
     }
     @Test
     void updatetest()
@@ -101,10 +102,12 @@ public class AutoRepositoryTest {
         ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
         ServiceCompany testServiceCompany = new ServiceCompany("SC-222");
         serviceCompanyRepository.create(testServiceCompany);
-        testService.addAuto("33333333333333331", "SC-222");
-        Auto testAuto = new Auto("33333333333333331", "SC-222", new ServiceCompany("SC-222"));
+        testService.addAuto("11111", "SC-222");
+        Auto testAuto = new Auto("11111", "SC-222", new ServiceCompany("SC-222"));
         Assertions.assertEquals(testRepository.doesCarToServiceCompanyRepository(testAuto), true);
-
+        serviceCompanyRepository.deleteAllServiceCompany();
+        testRepository.delete(testAuto);
+        testRepository.deleteAll();
     }
 
 }
