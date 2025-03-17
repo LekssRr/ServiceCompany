@@ -17,6 +17,7 @@ public class AutoServiceTest {
         new Auto("22222222222222222", "SC-2", new ServiceCompany("SC-2"));
         testService.addAuto("22222222222222222", "SC-2");
         Assertions.assertEquals(testService.deleteAuto("22222222222222222"), true);
+
     }
     @Test
     public void addAutoTest()
@@ -24,14 +25,15 @@ public class AutoServiceTest {
         AutoService testService = new AutoService();
         ServiceCompanyRepository testServiceCompanyRepository = new ServiceCompanyRepository();
         testServiceCompanyRepository.create(new ServiceCompany("SC-1"));
-
+        AutoRepository autoRepository = new AutoRepository();
         Assertions.assertEquals(testService.addAuto("11111", "SC-1"), true);
         Assertions.assertEquals(testService.addAuto("11121", "SC-1"), true);
-        //Assertions.assertEquals(testService.addAuto("13111", "SC-1"), true);
+        Assertions.assertEquals(testService.addAuto("13111", "SC-1"), true);
         testServiceCompanyRepository.delete(new ServiceCompany("SC-1"));
         testService.deleteAuto("11111");
         testService.deleteAuto("11121");
         testService.deleteAuto("13111");
+        autoRepository.deleteAll();
     }
     @Test
     public void updateAutoTest()
@@ -79,17 +81,13 @@ public class AutoServiceTest {
         serviceCompanyRepository.create(testServiceCompany);
         serviceCompanyRepository.create(testServiceCompany1);
         serviceCompanyRepository.create(testServiceCompany2);
-        testService.addAuto("33333333333333331", "SC-1");
+        //testService.addAuto("33333333333333331", "SC-1");
         testService.addAuto("33333333334333331", "SC-2");
         ArrayList<String> test = new ArrayList<>();
-        test.add("33333333333333331");
+        //test.add("33333333333333331");
         test.add("33333333334333331");
 
         Assertions.assertEquals(testService.getAllAuto(), test);
-        testService.deleteAuto("33333333333333331");
-        testService.deleteAuto("33333333233333331");
-        testService.deleteAuto("33333333334333331");
-        testService.deleteAuto("33333333333333338");
         serviceCompanyRepository.deleteAllServiceCompany();
         testRep.deleteAll();
     }

@@ -54,11 +54,20 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
     }
 
     @Override
-    public boolean updateServiceCompany(String nameServiceCompany) {
+    public boolean updateServiceCompany(String oldServiceCompanyName, String newServiceCompanyName) {
+
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
-        if(!setServiceCompany.add(nameServiceCompany))
+        if(!setServiceCompany.add(oldServiceCompanyName))
         {
-            serviceCompanyRepository.update(new ServiceCompany(nameServiceCompany));
+            ArrayList<String> vinList = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompany(oldServiceCompanyName)));
+
+            System.out.println(vinList);
+            serviceCompanyRepository.updateServiceCompany(new ServiceCompany(oldServiceCompanyName), new ServiceCompany(newServiceCompanyName));
+            for(int i = 0; i<vinList.size(); i++)
+            {
+                autoRepository.delete(new Auto(vinList.get(i), oldServiceCompanyName, new ServiceCompany(oldServiceCompanyName)));
+                autoRepository.create(new Auto(vinList.get(i), newServiceCompanyName, new ServiceCompany(newServiceCompanyName)));
+            }
             return true;
         }
         return false;
@@ -75,7 +84,7 @@ interface GetServiceCompany{
 interface AddServiceCompany{
 
     boolean addServiceCompany(String nameServiceCompany);
-    boolean updateServiceCompany(String nameServiceCompany);
+    boolean updateServiceCompany(String oldServiceCompanyName, String newServiceCompanyName);
 }
 interface DeleteServiceCompany
 {

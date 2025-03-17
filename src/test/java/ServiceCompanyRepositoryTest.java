@@ -145,6 +145,21 @@ public class ServiceCompanyRepositoryTest {
         testRepository.create(sc2);
         Assertions.assertEquals(testRepository.deleteAllServiceCompany(), true);
     }
+    @Test
+    void updateServicCompanyTest()
+    {
+        ServiceCompanyRepository testRepository = new ServiceCompanyRepository();
+        ServiceCompany serviceCompanyOld = new ServiceCompany("SC-22");
+        ServiceCompany serviceCompanyNew = new ServiceCompany("SC-33");
+        ArrayList<String> vinList= new ArrayList<>();
+        vinList.add("11111");
+        vinList.add("22222");
+        vinList.add("33333");
+        serviceCompanyOld.setAllVin(vinList);
+        testRepository.create(serviceCompanyOld);
+        Assertions.assertEquals(testRepository.updateServiceCompany(serviceCompanyOld, serviceCompanyNew), true);
+        //testRepository.deleteAllServiceCompany();
+    }
 
 
 }

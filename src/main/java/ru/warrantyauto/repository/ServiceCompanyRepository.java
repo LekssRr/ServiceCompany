@@ -34,6 +34,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
             sqlArray = sqlArray.replace('[', '{');
             result = true;
             String sql = "INSERT INTO \"ServiceCompany\"(\"ServiceCompany\", \"VinList\") VALUES ('" + SeviceCompanyName + "'," + "'" + sqlArray + "')" ;
+            System.out.println(sql);
             statement.executeUpdate(sql);
         }
         catch(Exception ex){
@@ -249,5 +250,12 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         this.create(cahsServiceCompany);
         return result;
     }
-
+    public boolean updateServiceCompany(ServiceCompany oldCompany, ServiceCompany newCompany)
+    {
+        ArrayList<String> cashBaseVin = new ArrayList<>(this.getAllAutoToServiceCompany(new ServiceCompany(oldCompany.getName())));
+        this.delete(oldCompany);
+        newCompany.setAllVin(cashBaseVin);
+        this.create(newCompany);
+        return true;
+    }
 }

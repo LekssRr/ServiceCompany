@@ -15,10 +15,13 @@ public class AutoRepositoryTest {
     void getTest()
     {
         AutoRepository autoRepository = new AutoRepository();
+        ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
         Auto a = new Auto("11111111111111115", "SC-5", new ServiceCompany("SC-5"));
         autoRepository.create(a);
         Assertions.assertEquals(autoRepository.get("11111111111111115"), "SC-5");
         autoRepository.delete(a);
+        autoRepository.deleteAll();
+        serviceCompanyRepository.deleteAllServiceCompany();
     }
     @Test
     void createTest()
