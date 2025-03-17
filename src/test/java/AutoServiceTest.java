@@ -81,10 +81,10 @@ public class AutoServiceTest {
         serviceCompanyRepository.create(testServiceCompany);
         serviceCompanyRepository.create(testServiceCompany1);
         serviceCompanyRepository.create(testServiceCompany2);
-        //testService.addAuto("33333333333333331", "SC-1");
+        testService.addAuto("33333333333333331", "SC-1");
         testService.addAuto("33333333334333331", "SC-2");
         ArrayList<String> test = new ArrayList<>();
-        //test.add("33333333333333331");
+        test.add("33333333333333331");
         test.add("33333333334333331");
 
         Assertions.assertEquals(testService.getAllAuto(), test);

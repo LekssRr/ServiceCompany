@@ -14,13 +14,10 @@ public class Auto extends Entity{
 
     public String getVin()
     {
-        return vinCode;
+        return this. vinCode;
     }
-    String getVinCode()
-    {
-        return this.vinCode;
-    }
-    ServiceCompany getServiceCompan()
+
+    public ServiceCompany getServiceCompan()
     {
         return serviceCompan;
     }

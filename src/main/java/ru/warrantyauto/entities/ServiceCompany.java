@@ -23,7 +23,7 @@ public class ServiceCompany extends Entity {
     public void addAuto(Auto newAuto)
     {
         allAuto.add(newAuto);
-        allVin.add(newAuto.getVinCode());
+        allVin.add(newAuto.getVin());
     }
     public void setAllVin(ArrayList<String> newVin)
     {

@@ -11,7 +11,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/ServiceCompany/*"})
 public class ServiceCompanyServlet extends HttpServlet {
 
-    private ServiceCompanySevice serviceCompanyService = new ServiceCompanySevice();
+    private final ServiceCompanySevice serviceCompanyService = new ServiceCompanySevice();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,6 +36,8 @@ public class ServiceCompanyServlet extends HttpServlet {
             }
         } else if (urlRequest[2].equals("DELETE")) {
             doPost(request, response);
+        } else if (urlRequest[2].equals("PUT")) {
+            doPost(request,response);
         }
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -65,6 +67,20 @@ public class ServiceCompanyServlet extends HttpServlet {
             {
                 response.getWriter().write("NotSK" + "\n");
             }
+        }else if(urlRequest[2].equals("PUT"))
+        {
+            if(!serviceCompanyService.addServiceCompany(urlRequest[3]))
+            {
+               if (serviceCompanyService.updateServiceCompany(urlRequest[3], urlRequest[4]))
+                {
+                    response.getWriter().write("true");
+                }
+               else
+               {
+                   response.getWriter().write("false");
+               }
+            }
+
         }
     }
 
