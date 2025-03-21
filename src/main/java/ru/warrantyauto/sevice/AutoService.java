@@ -3,6 +3,7 @@ package ru.warrantyauto.sevice;
 import ru.warrantyauto.entities.Auto;
 import ru.warrantyauto.entities.ServiceCompany;
 import ru.warrantyauto.repository.AutoRepository;
+import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
 
 import java.util.ArrayList;
@@ -11,7 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto {
-    final AutoRepository autoRepository = new AutoRepository();
+    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
+    String user = "postgres";
+    String password = "2112";
+    final AutoRepository autoRepository = new AutoRepository(new DBConnectionProvider(url, user, password));
     final ServiceCompanyRepository  serviceCompanyRepository = new ServiceCompanyRepository();
     @Override
     public boolean deleteAuto(String vin)

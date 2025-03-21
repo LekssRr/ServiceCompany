@@ -25,7 +25,6 @@ public class AutoServiceTest {
         AutoService testService = new AutoService();
         ServiceCompanyRepository testServiceCompanyRepository = new ServiceCompanyRepository();
         testServiceCompanyRepository.create(new ServiceCompany("SC-1"));
-        AutoRepository autoRepository = new AutoRepository();
         Assertions.assertEquals(testService.addAuto("11111", "SC-1"), true);
         Assertions.assertEquals(testService.addAuto("11121", "SC-1"), true);
         Assertions.assertEquals(testService.addAuto("13111", "SC-1"), true);
@@ -33,13 +32,13 @@ public class AutoServiceTest {
         testService.deleteAuto("11111");
         testService.deleteAuto("11121");
         testService.deleteAuto("13111");
-        autoRepository.deleteAll();
+
     }
     @Test
     public void updateAutoTest()
     {
         AutoService testService = new AutoService();
-        AutoRepository testRep = new AutoRepository();
+
         ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
         ServiceCompany testServiceCompany = new ServiceCompany("SC-1");
         serviceCompanyRepository.create(testServiceCompany);
@@ -51,7 +50,7 @@ public class AutoServiceTest {
         testService.deleteAuto("22222");
         serviceCompanyRepository.delete(testServiceCompany);
         serviceCompanyRepository.deleteAllServiceCompany();
-        testRep.deleteAll();
+
     }
     @Test
     void doesCarExistTest()
@@ -65,15 +64,14 @@ public class AutoServiceTest {
         Assertions.assertEquals(testService.doesCarExist("33333333333333331"), true);
         testService.deleteAuto("33333333333333331");
         serviceCompanyRepository.delete(testServiceCompany);
-        AutoRepository testRep = new AutoRepository();
-        testRep.deleteAll();
+
     }
     @Test
     void getAllAutoTest()
     {
 
         AutoService testService = new AutoService();
-        AutoRepository testRep = new AutoRepository();
+
         ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
         ServiceCompany testServiceCompany = new ServiceCompany("SC-1");
         ServiceCompany testServiceCompany1 = new ServiceCompany("SC-2");
@@ -89,7 +87,7 @@ public class AutoServiceTest {
 
         Assertions.assertEquals(testService.getAllAuto(), test);
         serviceCompanyRepository.deleteAllServiceCompany();
-        testRep.deleteAll();
+        deleteAutoTest();
     }
     @Test
     void getServiceCompanyToVinTest()

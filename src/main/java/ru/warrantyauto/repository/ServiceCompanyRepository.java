@@ -14,13 +14,14 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     String url = "jdbc:postgresql://localhost:5432/auto_dealer";
     String user = "postgres";
     String password = "2112";
+    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider(url, user, password);
 
     @Override
     public boolean create(ServiceCompany serviceCompany)
     {
         boolean result = false;
         getPostgresConnection();
-        try(Connection conn = DriverManager.getConnection(url, user, password))
+        try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String SeviceCompanyName = serviceCompany.getName();
@@ -46,7 +47,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean update(ServiceCompany serviceCompany)
     {
         boolean result = false;
-        try(Connection conn = DriverManager.getConnection(url, user, password))
+        try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String serviceCompanyName = serviceCompany.getName();
@@ -72,7 +73,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean delete(ServiceCompany serviceCompany)
     {
         boolean result = false;
-        try(Connection conn = DriverManager.getConnection(url, user, password))
+        try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String serviceCompanyName = serviceCompany.getName();
@@ -110,8 +111,8 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
 
         List<String> res = new ArrayList<>();
         String stringResult = null;
-        getPostgresConnection();
-        try(Connection conn = DriverManager.getConnection(url, user, password))
+
+        try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String nameServiceCompany = serviceCompany.getName();
@@ -134,8 +135,8 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean addAutoToServiceCompany(Auto newAuto)
     {
         boolean res = false;
-        getPostgresConnection();
-        try(Connection conn = DriverManager.getConnection(url, user, password))
+
+        try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String nameServiceCompany = newAuto.getNameServiceCompany();
@@ -154,8 +155,8 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public List<String> getAllServiceCompany() {
         List<String> res = new ArrayList<>();
         String stringResult = null;
-        getPostgresConnection();
-        try(Connection conn = DriverManager.getConnection(url, user, password))
+
+        try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String sql= "SELECT \"ServiceCompany\" FROM \"ServiceCompany\"";
@@ -178,8 +179,8 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean deleteAllServiceCompany()
     {
         boolean res = false;
-        getPostgresConnection();
-        try(Connection conn = DriverManager.getConnection(url, user, password))
+
+        try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String sql= "DELETE FROM \"ServiceCompany\"";
@@ -257,5 +258,18 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         newCompany.setAllVin(cashBaseVin);
         this.create(newCompany);
         return true;
+    }
+    private void createCustomersTableIfNotExistsServiceCompany() throws SQLException {
+        try (Connection conn = this.dbConnectionProvider.getConnection())
+        {
+            PreparedStatement pstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS \"ServiceCompany\" (\n" +
+                    "\"ServiceCompany\" character varying NOT NULL primary key ,\n" +
+                    "\"VinList\" text[]\n" +
+                    ")");
+            pstmt.execute();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
