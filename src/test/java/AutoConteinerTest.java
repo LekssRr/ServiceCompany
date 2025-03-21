@@ -1,12 +1,10 @@
-import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.warrantyauto.entities.Auto;
-import ru.warrantyauto.entities.ServiceCompany;
+import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
-import ru.warrantyauto.sevice.AutoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +43,8 @@ public class AutoConteinerTest {
     @Test
     void getAutoTest()
     {
-        serviceCompanyRepository.create(new ServiceCompany("SC-5"));
-        Auto a = new Auto("11111111111111115", "SC-5", new ServiceCompany("SC-5"));
+        serviceCompanyRepository.create(new ServiceCompanyDTO("SC-5"));
+        AutoDTO a = new AutoDTO("11111111111111115", "SC-5", new ServiceCompanyDTO("SC-5"));
         autoRepository.create(a);
         Assertions.assertEquals(autoRepository.get("11111111111111115"), "SC-5");
         autoRepository.delete(a);
@@ -56,19 +54,19 @@ public class AutoConteinerTest {
     @Test
     void createTest()
     {
-        autoRepository.delete(new Auto("22222222222222222", "SC-2", new ServiceCompany("SC-2")));
-        Assertions.assertEquals(autoRepository.create(new Auto("22222222222222222", "SC-2", new ServiceCompany("SC-2"))), true);
-        autoRepository.delete(new Auto("22222222222222222", "SC-2", new ServiceCompany("SC-2")));
+        autoRepository.delete(new AutoDTO("22222222222222222", "SC-2", new ServiceCompanyDTO("SC-2")));
+        Assertions.assertEquals(autoRepository.create(new AutoDTO("22222222222222222", "SC-2", new ServiceCompanyDTO("SC-2"))), true);
+        autoRepository.delete(new AutoDTO("22222222222222222", "SC-2", new ServiceCompanyDTO("SC-2")));
     }
     @Test
     void getAllServiceCompanyTest()
     {
-        ServiceCompany serviceCompany = new ServiceCompany("SC-0001");
-        ServiceCompany serviceCompany1 = new ServiceCompany("SC-0002");
-        ServiceCompany serviceCompany2 = new ServiceCompany("SC-0003");
-        Auto a = new Auto("88888888888888888", serviceCompany.getName(), serviceCompany);
-        Auto b = new Auto("88888888888888881", serviceCompany1.getName(), serviceCompany1);
-        Auto c = new Auto("88888888888888882", serviceCompany2.getName(), serviceCompany2);
+        ServiceCompanyDTO serviceCompany = new ServiceCompanyDTO("SC-0001");
+        ServiceCompanyDTO serviceCompany1 = new ServiceCompanyDTO("SC-0002");
+        ServiceCompanyDTO serviceCompany2 = new ServiceCompanyDTO("SC-0003");
+        AutoDTO a = new AutoDTO("88888888888888888", serviceCompany.getName(), serviceCompany);
+        AutoDTO b = new AutoDTO("88888888888888881", serviceCompany1.getName(), serviceCompany1);
+        AutoDTO c = new AutoDTO("88888888888888882", serviceCompany2.getName(), serviceCompany2);
         ArrayList<String> testvinList = new ArrayList<>();
         testvinList.add(serviceCompany.getName());
         testvinList.add(serviceCompany1.getName());
@@ -86,9 +84,9 @@ public class AutoConteinerTest {
     void getAllVinTest()
     {
         List<String> current = new ArrayList<String>();
-        Auto a = new Auto("22222222222222221", "SC-1", new ServiceCompany("SC-1"));
-        Auto b = new Auto("22222222222222223", "SC-2", new ServiceCompany("SC-2"));
-        Auto c = new Auto("22222222222222224", "SC-3", new ServiceCompany("SC-3"));
+        AutoDTO a = new AutoDTO("22222222222222221", "SC-1", new ServiceCompanyDTO("SC-1"));
+        AutoDTO b = new AutoDTO("22222222222222223", "SC-2", new ServiceCompanyDTO("SC-2"));
+        AutoDTO c = new AutoDTO("22222222222222224", "SC-3", new ServiceCompanyDTO("SC-3"));
         autoRepository.create(a);
         autoRepository.create(b);
         autoRepository.create(c);
@@ -101,9 +99,9 @@ public class AutoConteinerTest {
     @Test
     void deleteAllTest()
     {
-        Auto a = new Auto("22222222222222221", "SC-1", new ServiceCompany("SC-2"));
-        Auto b = new Auto("22222222222222223", "SC-2", new ServiceCompany("SC-2"));
-        Auto c = new Auto("22222222222222224", "SC-3", new ServiceCompany("SC-2"));
+        AutoDTO a = new AutoDTO("22222222222222221", "SC-1", new ServiceCompanyDTO("SC-2"));
+        AutoDTO b = new AutoDTO("22222222222222223", "SC-2", new ServiceCompanyDTO("SC-2"));
+        AutoDTO c = new AutoDTO("22222222222222224", "SC-3", new ServiceCompanyDTO("SC-2"));
         autoRepository.create(a);
         autoRepository.create(b);
         autoRepository.create(c);
@@ -113,7 +111,7 @@ public class AutoConteinerTest {
     @Test
     void deleteTest()
     {
-        Auto test = new Auto("11111111111111115", "SC-5", new ServiceCompany("SC-5"));
+        AutoDTO test = new AutoDTO("11111111111111115", "SC-5", new ServiceCompanyDTO("SC-5"));
         autoRepository.create(test);
         Assertions.assertEquals(autoRepository.delete(test), true);
         autoRepository.deleteAll();
@@ -121,21 +119,21 @@ public class AutoConteinerTest {
     @Test
     void updatetest()
     {
-        Auto test = new Auto("11111111111111115", "SC-5", new ServiceCompany("SC-5"));
+        AutoDTO test = new AutoDTO("11111111111111115", "SC-5", new ServiceCompanyDTO("SC-5"));
         autoRepository.create(test);
-        Auto test1 = new Auto("11111111111111115", "SC-6", new ServiceCompany("SC-6"));
+        AutoDTO test1 = new AutoDTO("11111111111111115", "SC-6", new ServiceCompanyDTO("SC-6"));
         Assertions.assertEquals(autoRepository.update(test1), true);
         autoRepository.delete(test1);
     }
     @Test
     void doesCarToServiceCompanyRepositoryTest()
     {
-        ServiceCompany testServiceCompany = new ServiceCompany("SC-222");
+        ServiceCompanyDTO testServiceCompany = new ServiceCompanyDTO("SC-222");
 
 
-        Auto testAuto = new Auto("77777777777777777", testServiceCompany.getName(), testServiceCompany);
-        Auto testAuto1 = new Auto("77777777777777778", testServiceCompany.getName(), testServiceCompany);
-        Auto testAuto2 = new Auto("77777777777777787", testServiceCompany.getName(), testServiceCompany);
+        AutoDTO testAuto = new AutoDTO("77777777777777777", testServiceCompany.getName(), testServiceCompany);
+        AutoDTO testAuto1 = new AutoDTO("77777777777777778", testServiceCompany.getName(), testServiceCompany);
+        AutoDTO testAuto2 = new AutoDTO("77777777777777787", testServiceCompany.getName(), testServiceCompany);
         ArrayList<String> test = new ArrayList<>();
         test.add(testAuto.getVin());
         test.add(testAuto1.getVin());

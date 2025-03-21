@@ -1,7 +1,7 @@
 package ru.warrantyauto.sevice;
 
-import ru.warrantyauto.entities.Auto;
-import ru.warrantyauto.entities.ServiceCompany;
+import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
@@ -13,17 +13,23 @@ import java.util.Set;
 
 public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto {
 
-    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-    String user = "postgres";
-    String password = "2112";
+//    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
+//    String user = "postgres";
+//    String password = "2112";
 
-    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider(url, user, password);
-    final AutoRepository autoRepository = new AutoRepository(dbConnectionProvider);
-    final ServiceCompanyRepository  serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
+    DBConnectionProvider dbConnectionProvider;
+    final AutoRepository autoRepository;
+    final ServiceCompanyRepository  serviceCompanyRepository;
+    public AutoService(DBConnectionProvider newDbConnectionProvider)
+    {
+        dbConnectionProvider = newDbConnectionProvider;
+        autoRepository = new AutoRepository(newDbConnectionProvider);
+        serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
+    }
     @Override
     public boolean deleteAuto(String vin)
     {
-        Auto deleteAuto = new Auto(vin, autoRepository.get(vin), new ServiceCompany(autoRepository.get(vin)));
+        AutoDTO deleteAuto = new AutoDTO(vin, autoRepository.get(vin), new ServiceCompanyDTO(autoRepository.get(vin)));
         serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.delete(deleteAuto);
     }
@@ -35,7 +41,7 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(!setServiceCompany.add(nameServiceCompany))
         {
-            Auto newAuto = new Auto(newVin, nameServiceCompany, new ServiceCompany(nameServiceCompany));
+            AutoDTO newAuto = new AutoDTO(newVin, nameServiceCompany, new ServiceCompanyDTO(nameServiceCompany));
             autoRepository.create(newAuto);
             res = serviceCompanyRepository.addVinToServiceCompany(newAuto);
         }
@@ -68,15 +74,15 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
     @Override
     public boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany)
     {
-        Auto newAuto = new Auto(autoVin, nameServiceCompany, new ServiceCompany(nameServiceCompany));
+        AutoDTO newAuto = new AutoDTO(autoVin, nameServiceCompany, new ServiceCompanyDTO(nameServiceCompany));
         return autoRepository.doesCarToServiceCompanyRepository(newAuto);
     }
 
     @Override
     public boolean updateAuto(String vin, String newNameServiceCompany) {
         String deleteVinSC = this.getServiceCompanyToVin(vin);
-        Auto deleteAuto = new Auto(vin, deleteVinSC, new ServiceCompany(deleteVinSC));
-        Auto updateAuto = new Auto(vin, newNameServiceCompany, new ServiceCompany(newNameServiceCompany));
+        AutoDTO deleteAuto = new AutoDTO(vin, deleteVinSC, new ServiceCompanyDTO(deleteVinSC));
+        AutoDTO updateAuto = new AutoDTO(vin, newNameServiceCompany, new ServiceCompanyDTO(newNameServiceCompany));
         serviceCompanyRepository.addVinToServiceCompany(updateAuto);
         serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.update(updateAuto);

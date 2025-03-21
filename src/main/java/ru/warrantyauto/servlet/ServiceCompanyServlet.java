@@ -5,13 +5,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.sevice.ServiceCompanySevice;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/ServiceCompany/*"})
 public class ServiceCompanyServlet extends HttpServlet {
+    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
+    String user = "postgres";
+    String password = "2112";
 
-    private final ServiceCompanySevice serviceCompanyService = new ServiceCompanySevice();
+    private final ServiceCompanySevice serviceCompanyService = new ServiceCompanySevice(new DBConnectionProvider(url, user,password));
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

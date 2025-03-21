@@ -1,14 +1,14 @@
 package ru.warrantyauto.repository;
 
-import ru.warrantyauto.entities.Auto;
-import ru.warrantyauto.entities.ServiceCompany;
+import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ServiceCompanyRepository implements Repository<ServiceCompany, List<String>>, RepositoryServiceCompany{
+public class ServiceCompanyRepository implements Repository<ServiceCompanyDTO, List<String>>, RepositoryServiceCompany{
 
     DBConnectionProvider dbConnectionProvider;
     public ServiceCompanyRepository(DBConnectionProvider newDbConnectionProvider)
@@ -17,7 +17,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         createCustomersTableIfNotExistsServiceCompany();
     }
     @Override
-    public boolean create(ServiceCompany serviceCompany)
+    public boolean create(ServiceCompanyDTO serviceCompany)
     {
         boolean result = false;
         try(Connection conn = dbConnectionProvider.getConnection())
@@ -43,7 +43,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
 
     };
     @Override
-    public boolean update(ServiceCompany serviceCompany)
+    public boolean update(ServiceCompanyDTO serviceCompany)
     {
         boolean result = false;
         try(Connection conn = dbConnectionProvider.getConnection())
@@ -69,7 +69,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         return result;
     }
     @Override
-    public boolean delete(ServiceCompany serviceCompany)
+    public boolean delete(ServiceCompanyDTO serviceCompany)
     {
         boolean result = false;
         try(Connection conn = dbConnectionProvider.getConnection())
@@ -87,7 +87,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
 
 
     @Override
-    public List<String> getAllAutoToServiceCompany(ServiceCompany serviceCompany) {
+    public List<String> getAllAutoToServiceCompany(ServiceCompanyDTO serviceCompany) {
 
         List<String> res = new ArrayList<>();
         String stringResult = null;
@@ -112,7 +112,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         }
         return res;
     }
-    public boolean addAutoToServiceCompany(Auto newAuto)
+    public boolean addAutoToServiceCompany(AutoDTO newAuto)
     {
         boolean res = false;
 
@@ -120,10 +120,10 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         {
             Statement statement = conn.createStatement();
             String nameServiceCompany = newAuto.getNameServiceCompany();
-            List<String> vinToServicCompany = this.getAllAutoToServiceCompany(new ServiceCompany(nameServiceCompany));
+            List<String> vinToServicCompany = this.getAllAutoToServiceCompany(new ServiceCompanyDTO(nameServiceCompany));
             vinToServicCompany.add(newAuto.getVin());
-            this.delete(new ServiceCompany(nameServiceCompany));
-            this.create(new ServiceCompany(nameServiceCompany));
+            this.delete(new ServiceCompanyDTO(nameServiceCompany));
+            this.create(new ServiceCompanyDTO(nameServiceCompany));
             res = true;
             //ResultSet rs = statement.executeQuery(sql);
         }
@@ -172,19 +172,19 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         return res;
     }
 
-    public ServiceCompany getServiceCompanyToName(String nameServiceCompany)
+    public ServiceCompanyDTO getServiceCompanyToName(String nameServiceCompany)
     {
-        ServiceCompany result = null;
+        ServiceCompanyDTO result = null;
         for(int i = 0; i<= this.getAllServiceCompany().size()-1; i++)
         {
             getAllServiceCompany().get(i).equals(nameServiceCompany);
-            result = new ServiceCompany(nameServiceCompany);
+            result = new ServiceCompanyDTO(nameServiceCompany);
         }
         return result;
     }
-    public boolean addVinToServiceCompany(Auto newAuto)
+    public boolean addVinToServiceCompany(AutoDTO newAuto)
     {
-        ServiceCompany cahsServiceCompany = new ServiceCompany(newAuto.getNameServiceCompany());
+        ServiceCompanyDTO cahsServiceCompany = new ServiceCompanyDTO(newAuto.getNameServiceCompany());
         ArrayList<String> cashVin = new ArrayList<>(this.getAllAutoToServiceCompany(cahsServiceCompany));
         this.delete(getServiceCompanyToName(newAuto.getNameServiceCompany()));
         ArrayList<String> newVinList = new ArrayList<>();
@@ -213,9 +213,9 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         cahsServiceCompany.setAllVin(newVinList);
         return this.create(cahsServiceCompany);
     }
-    public boolean deleteVinToServiceCompany(Auto newAuto) {
+    public boolean deleteVinToServiceCompany(AutoDTO newAuto) {
         boolean result =false;
-        ServiceCompany cahsServiceCompany = new ServiceCompany(newAuto.getNameServiceCompany());
+        ServiceCompanyDTO cahsServiceCompany = new ServiceCompanyDTO(newAuto.getNameServiceCompany());
         ArrayList<String> cashVin = new ArrayList<>(this.getAllAutoToServiceCompany(cahsServiceCompany));
         this.delete(getServiceCompanyToName(newAuto.getNameServiceCompany()));
         ArrayList<String> newVinList = new ArrayList<>();
@@ -231,9 +231,9 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         this.create(cahsServiceCompany);
         return result;
     }
-    public boolean updateServiceCompany(ServiceCompany oldCompany, ServiceCompany newCompany)
+    public boolean updateServiceCompany(ServiceCompanyDTO oldCompany, ServiceCompanyDTO newCompany)
     {
-        ArrayList<String> cashBaseVin = new ArrayList<>(this.getAllAutoToServiceCompany(new ServiceCompany(oldCompany.getName())));
+        ArrayList<String> cashBaseVin = new ArrayList<>(this.getAllAutoToServiceCompany(new ServiceCompanyDTO(oldCompany.getName())));
         this.delete(oldCompany);
         newCompany.setAllVin(cashBaseVin);
         this.create(newCompany);

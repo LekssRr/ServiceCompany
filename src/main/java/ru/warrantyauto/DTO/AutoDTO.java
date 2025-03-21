@@ -1,11 +1,11 @@
-package ru.warrantyauto.entities;
+package ru.warrantyauto.DTO;
 
-public class Auto extends Entity{
+public class AutoDTO extends DTO {
 
     private String vinCode;
     private String nameServiceCompany;
-    private ServiceCompany serviceCompan;
-    public Auto(String newVinCode, String newNameServiceCompany, ServiceCompany newServiceCompan)
+    private ServiceCompanyDTO serviceCompan;
+    public AutoDTO(String newVinCode, String newNameServiceCompany, ServiceCompanyDTO newServiceCompan)
     {
         this.vinCode = newVinCode;
         this.nameServiceCompany = newNameServiceCompany;
@@ -17,7 +17,7 @@ public class Auto extends Entity{
         return this. vinCode;
     }
 
-    public ServiceCompany getServiceCompan()
+    public ServiceCompanyDTO getServiceCompan()
     {
         return serviceCompan;
     }

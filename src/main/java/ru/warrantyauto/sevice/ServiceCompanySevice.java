@@ -1,7 +1,7 @@
 package ru.warrantyauto.sevice;
 
-import ru.warrantyauto.entities.Auto;
-import ru.warrantyauto.entities.ServiceCompany;
+import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
@@ -12,19 +12,26 @@ import java.util.List;
 import java.util.Set;
 
 public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCompany, GetServiceCompany {
-    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-    String user = "postgres";
-    String password = "2112";
-    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider(url, user, password);
-    final ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
-    final AutoRepository autoRepository = new AutoRepository(dbConnectionProvider);
+//    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
+//    String user = "postgres";
+//    String password = "2112";
+
+    DBConnectionProvider dbConnectionProvider;
+    final ServiceCompanyRepository serviceCompanyRepository;
+    final AutoRepository autoRepository;
+    public ServiceCompanySevice(DBConnectionProvider newDbConnectionProvider)
+    {
+        dbConnectionProvider = newDbConnectionProvider;
+        this.serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
+        this.autoRepository = new AutoRepository(newDbConnectionProvider);
+    }
     @Override
     public boolean addServiceCompany(String nameServiceCompany)
     {
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(setServiceCompany.add(nameServiceCompany))
         {
-            serviceCompanyRepository.create(new ServiceCompany(nameServiceCompany));
+            serviceCompanyRepository.create(new ServiceCompanyDTO(nameServiceCompany));
             return true;
         }
         return false;
@@ -36,12 +43,12 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(!setServiceCompany.add(nameServiceCompany))
         {
-            ArrayList<String> vinListDeleteAuto = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompany(nameServiceCompany)));
+            ArrayList<String> vinListDeleteAuto = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyDTO(nameServiceCompany)));
             for(int i = 0; i <= vinListDeleteAuto.size()-1; i++)
             {
-                autoRepository.delete(new Auto(vinListDeleteAuto.get(i), nameServiceCompany, new ServiceCompany(nameServiceCompany)));
+                autoRepository.delete(new AutoDTO(vinListDeleteAuto.get(i), nameServiceCompany, new ServiceCompanyDTO(nameServiceCompany)));
             }
-            serviceCompanyRepository.delete(new ServiceCompany(nameServiceCompany));
+            serviceCompanyRepository.delete(new ServiceCompanyDTO(nameServiceCompany));
             return true;
         }
         return false;
@@ -49,7 +56,7 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
     @Override
     public String getAllVinServiceCompany(String nameServiceCompany)
     {
-        return serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompany(nameServiceCompany)).toString();
+        return serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyDTO(nameServiceCompany)).toString();
     }
 
     @Override
@@ -64,14 +71,14 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(!setServiceCompany.add(oldServiceCompanyName))
         {
-            ArrayList<String> vinList = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompany(oldServiceCompanyName)));
+            ArrayList<String> vinList = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyDTO(oldServiceCompanyName)));
 
             System.out.println(vinList);
-            serviceCompanyRepository.updateServiceCompany(new ServiceCompany(oldServiceCompanyName), new ServiceCompany(newServiceCompanyName));
+            serviceCompanyRepository.updateServiceCompany(new ServiceCompanyDTO(oldServiceCompanyName), new ServiceCompanyDTO(newServiceCompanyName));
             for(int i = 0; i<vinList.size(); i++)
             {
-                autoRepository.delete(new Auto(vinList.get(i), oldServiceCompanyName, new ServiceCompany(oldServiceCompanyName)));
-                autoRepository.create(new Auto(vinList.get(i), newServiceCompanyName, new ServiceCompany(newServiceCompanyName)));
+                autoRepository.delete(new AutoDTO(vinList.get(i), oldServiceCompanyName, new ServiceCompanyDTO(oldServiceCompanyName)));
+                autoRepository.create(new AutoDTO(vinList.get(i), newServiceCompanyName, new ServiceCompanyDTO(newServiceCompanyName)));
             }
             return true;
         }

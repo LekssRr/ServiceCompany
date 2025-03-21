@@ -5,7 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.warrantyauto.entities.Auto;
+import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 
 import java.io.IOException;
@@ -14,8 +15,11 @@ import java.util.Map;
 @WebServlet(urlPatterns = {"/Auto/*"})
 public class AutoServlet extends HttpServlet {
 
-    private Auto auto;
-    private AutoService autoService = new AutoService();
+    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
+    String user = "postgres";
+    String password = "2112";
+    private AutoDTO auto;
+    private AutoService autoService = new AutoService(new DBConnectionProvider(url, user, password));
     @Override
     public void init() {
 
