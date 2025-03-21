@@ -68,7 +68,22 @@ public class ServiceCompanyServiceTest {
         autoService.deleteAuto(test1.getVin());
         autoService.deleteAuto(test2.getVin());
         autoService.deleteAuto(test3.getVin());
+        testServiceCompanyService.deleteServiceCompany("SC-99");
         testServiceCompanyService.deleteServiceCompany("SC-8");
     }
-
+    @Test
+    void doesCarToServiceCompanyServiceTest()
+    {
+        ServiceCompanySevice testServiceCompanyService = new ServiceCompanySevice();
+        AutoService autoService = new AutoService();
+        ServiceCompany sc = new ServiceCompany("SC-99");
+        testServiceCompanyService.addServiceCompany(sc.getName());
+        Auto a = new Auto("11111111111111111", sc.getName(), sc);
+        Auto b = new Auto("11111111111111121", sc.getName(), sc);
+        Auto c = new Auto("11111111111111131", sc.getName(), sc);
+        autoService.addAuto(a.getVin(), a.getNameServiceCompany());
+        autoService.addAuto(b.getVin(), b.getNameServiceCompany());
+        autoService.addAuto(c.getVin(), c.getNameServiceCompany());
+        Assertions.assertEquals(autoService.doesCarToServiceCompany(a.getVin(), a.getNameServiceCompany()), true);
+    }
 }

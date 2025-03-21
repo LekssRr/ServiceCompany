@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Set;
 
 public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto {
+
     String url = "jdbc:postgresql://localhost:5432/auto_dealer";
     String user = "postgres";
     String password = "2112";
+
     DBConnectionProvider dbConnectionProvider = new DBConnectionProvider(url, user, password);
     final AutoRepository autoRepository = new AutoRepository(dbConnectionProvider);
     final ServiceCompanyRepository  serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);

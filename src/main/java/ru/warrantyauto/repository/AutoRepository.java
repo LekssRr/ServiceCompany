@@ -102,7 +102,7 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
             String sql= "SELECT \"NameServiceCompany\" FROM \"Auto\"";
 
             ResultSet rs = statement.executeQuery(sql);
-            System.out.println(rs.getString("NameServiceCompany"));
+            System.out.println("12231231231");
             while (rs.next())
             {
                 result.add(rs.getString("NameServiceCompany"));
@@ -156,24 +156,33 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     public boolean doesCarToServiceCompanyRepository(Auto auto)
     {
         ArrayList<String> allAutoVin = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompany(auto.getNameServiceCompany())));
-        System.out.println(allAutoVin);
+        System.out.println(auto.getNameServiceCompany());
+        System.out.println(allAutoVin.size());
         boolean result = false;
-        for(int i =0; i<=allAutoVin.size()-1; i++)
+        if(allAutoVin.size()-1>0)
         {
-            if (allAutoVin.get(i).equals(auto.getVin()))
+            for(int i =0; i<=allAutoVin.size()-1; i++)
             {
-                result = true;
+                System.out.print(allAutoVin.get(i).equals(auto.getVin()));
+                if (allAutoVin.get(i).equals(auto.getVin()))
+                {
+                    result = true;
+                    return result;
+                }
             }
         }
+
        return false;
     }
     private void createCustomersTableIfNotExistsAuto()
     {
         try (Connection conn = this.dbConnectionProvider.getConnection())
         {
-            PreparedStatement pstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS \"Auto\"(\n" +
-                    "    \"Vin\" character varying NOT NULL primary key,\n" +
-                    "    \"NameServiceCompany\" character varying NOT NULL\n" +
+            PreparedStatement pstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS public.\"Auto\"\n" +
+                    "(\n" +
+                    "    \"Vin\" character varying(17) COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                    "    \"NameServiceCompany\" character varying COLLATE pg_catalog.\"default\" NOT NULL,\n" +
+                    "    CONSTRAINT \"Auto_pkey\" PRIMARY KEY (\"Vin\")\n" +
                     ")");
             pstmt.execute();
         }

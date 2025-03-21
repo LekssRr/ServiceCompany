@@ -10,10 +10,6 @@ import java.util.List;
 
 public class ServiceCompanyRepository implements Repository<ServiceCompany, List<String>>, RepositoryServiceCompany{
 
-    static Connection connection;
-    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-    String user = "postgres";
-    String password = "2112";
     DBConnectionProvider dbConnectionProvider;
     public ServiceCompanyRepository(DBConnectionProvider newDbConnectionProvider)
     {
@@ -24,7 +20,6 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     public boolean create(ServiceCompany serviceCompany)
     {
         boolean result = false;
-        getPostgresConnection();
         try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
@@ -91,31 +86,12 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     }
 
 
-
-    private static Connection getPostgresConnection()
-    {
-        try {
-            DriverManager.registerDriver((Driver)
-                    Class.forName("org.postgresql.Driver").newInstance());
-
-            String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-            String user = "postgres";
-            String password = "2112";
-
-            connection = DriverManager.getConnection(url, user, password);
-            return connection;
-        } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     @Override
     public List<String> getAllAutoToServiceCompany(ServiceCompany serviceCompany) {
 
         List<String> res = new ArrayList<>();
         String stringResult = null;
-
+        //System.out.print(serviceCompany.getName());
         try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
