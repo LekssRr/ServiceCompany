@@ -14,63 +14,61 @@ public class ServiceCompanyServiceTest {
     @Test
     void addServiceCompanyTest()
     {
-//        ServiceCompanySevice testServiceCompanyService = new ServiceCompanySevice();
-//        ServiceCompanyRepository testServiceCompanyRepository = new ServiceCompanyRepository();
-//        ServiceCompany sc = new ServiceCompany("SC-7");
-//        ServiceCompany sc1 = new ServiceCompany("SC-5");
-//        ServiceCompany sc2 = new ServiceCompany("SC-2");
-//        testServiceCompanyRepository.create(sc);
-//        testServiceCompanyRepository.create(sc1);
-//        testServiceCompanyRepository.create(sc2);
-//        testServiceCompanyRepository.delete(new ServiceCompany("SC-1"));
-//        Assertions.assertEquals(testServiceCompanyService.addServiceCompany("SC-7"), false);
-//        Assertions.assertEquals(testServiceCompanyService.addServiceCompany("SC-1"), true);
-//        testServiceCompanyRepository.delete(new ServiceCompany("SC-1"));
-//        testServiceCompanyRepository.delete(new ServiceCompany("SC-7"));
-//        testServiceCompanyRepository.delete(new ServiceCompany("SC-5"));
-//        testServiceCompanyRepository.delete(new ServiceCompany("SC-2"));
-//        testServiceCompanyRepository.deleteAllServiceCompany();
+        ServiceCompanySevice testServiceCompanyService = new ServiceCompanySevice();
+        ServiceCompany sc = new ServiceCompany("SC-7");
+        ServiceCompany sc1 = new ServiceCompany("SC-5");
+        ServiceCompany sc2 = new ServiceCompany("SC-2");
+        testServiceCompanyService.addServiceCompany(sc.getName());
+        testServiceCompanyService.addServiceCompany(sc1.getName());
+        testServiceCompanyService.addServiceCompany(sc2.getName());
+        testServiceCompanyService.deleteServiceCompany("SC-1");
+        Assertions.assertEquals(testServiceCompanyService.addServiceCompany("SC-7"), false);
+        Assertions.assertEquals(testServiceCompanyService.addServiceCompany("SC-1"), true);
+        testServiceCompanyService.deleteServiceCompany("SC-1");
+        testServiceCompanyService.deleteServiceCompany("SC-7");
+        testServiceCompanyService.deleteServiceCompany("SC-5");
+        testServiceCompanyService.deleteServiceCompany("SC-2");
     }
     @Test
     void deleteServiceCompany()
     {
-//        ServiceCompanySevice testServiceCompanyService = new ServiceCompanySevice();
-//        ServiceCompanyRepository testServiceCompanyRepository = new ServiceCompanyRepository();
-//        ServiceCompany sc = new ServiceCompany("SC-7");
-//        ServiceCompany sc1 = new ServiceCompany("SC-5");
-//        ServiceCompany sc2 = new ServiceCompany("SC-2");
-//        testServiceCompanyRepository.create(sc);
-//        testServiceCompanyRepository.create(sc1);
-//        testServiceCompanyRepository.create(sc2);
-//        testServiceCompanyService.deleteServiceCompany("SC-1");
-//        Assertions.assertEquals(testServiceCompanyService.deleteServiceCompany("SC-7"), true);
-//        Assertions.assertEquals(testServiceCompanyService.deleteServiceCompany("SC-1"), false);
-//        testServiceCompanyService.deleteServiceCompany("SC-2");
-//        testServiceCompanyService.deleteServiceCompany("SC-5");
-//        testServiceCompanyRepository.deleteAllServiceCompany();
+        ServiceCompanySevice testServiceCompanyService = new ServiceCompanySevice();
+
+        ServiceCompany sc = new ServiceCompany("SC-7");
+        ServiceCompany sc1 = new ServiceCompany("SC-5");
+        ServiceCompany sc2 = new ServiceCompany("SC-2");
+        testServiceCompanyService.addServiceCompany(sc.getName());
+        testServiceCompanyService.addServiceCompany(sc1.getName());
+        testServiceCompanyService.addServiceCompany(sc2.getName());
+        testServiceCompanyService.deleteServiceCompany("SC-1");
+        Assertions.assertEquals(testServiceCompanyService.deleteServiceCompany("SC-7"), true);
+        Assertions.assertEquals(testServiceCompanyService.deleteServiceCompany("SC-1"), false);
+        testServiceCompanyService.deleteServiceCompany("SC-2");
+        testServiceCompanyService.deleteServiceCompany("SC-5");
     }
     @Test
     void updateServiceCompanyServiceTest()
     {
-//        AutoRepository testAutoRepository = new AutoRepository();
-//        ServiceCompanySevice testServiceCompanyService = new ServiceCompanySevice();
-//        ServiceCompanyRepository testServiceCompanyRepository = new ServiceCompanyRepository();
-//        ServiceCompany sc = new ServiceCompany("SC-99");
-//        ArrayList<String> test = new ArrayList<>();
-//        Auto test1 = new Auto("aaaaaa", "SC-99", new ServiceCompany("SC-99"));
-//        Auto test2 = new Auto("bbbbbb", "SC-99", new ServiceCompany("SC-99"));
-//        Auto test3 = new Auto("vvvvvv", "SC-99", new ServiceCompany("SC-99"));
-//        test.add("aaaaaa");
-//        test.add("bbbbbb");
-//        test.add("vvvvvv");
-//        sc.setAllVin(test);
-//        testAutoRepository.create(test1);
-//        testAutoRepository.create(test2);
-//        testAutoRepository.create(test3);
-//        testServiceCompanyRepository.create(sc);
-//        Assertions.assertEquals(testServiceCompanyService.updateServiceCompany("SC-99", "SC-8"), true);
-//        testServiceCompanyRepository.deleteAllServiceCompany();
-//        testAutoRepository.deleteAll();
+        ServiceCompanySevice testServiceCompanyService = new ServiceCompanySevice();
+        AutoService autoService = new AutoService();
+        ServiceCompany sc = new ServiceCompany("SC-99");
+        ArrayList<String> test = new ArrayList<>();
+        Auto test1 = new Auto("aaaaaa", "SC-99", new ServiceCompany("SC-99"));
+        Auto test2 = new Auto("bbbbbb", "SC-99", new ServiceCompany("SC-99"));
+        Auto test3 = new Auto("vvvvvv", "SC-99", new ServiceCompany("SC-99"));
+        test.add("aaaaaa");
+        test.add("bbbbbb");
+        test.add("vvvvvv");
+        sc.setAllVin(test);
+        autoService.addAuto(test1.getVin(), test1.getNameServiceCompany());
+        autoService.addAuto(test2.getVin(), test2.getNameServiceCompany());
+        autoService.addAuto(test3.getVin(), test3.getNameServiceCompany());
+        testServiceCompanyService.addServiceCompany(sc.getName());
+        Assertions.assertEquals(testServiceCompanyService.updateServiceCompany("SC-99", "SC-8"), true);
+        autoService.deleteAuto(test1.getVin());
+        autoService.deleteAuto(test2.getVin());
+        autoService.deleteAuto(test3.getVin());
+        testServiceCompanyService.deleteServiceCompany("SC-8");
     }
 
 }

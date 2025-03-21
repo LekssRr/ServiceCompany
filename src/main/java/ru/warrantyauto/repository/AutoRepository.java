@@ -9,16 +9,14 @@ import java.util.List;
 
 public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
 
-    ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
     private static Connection connection;
-    //private Statement statement;
-//    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-//    String user = "postgres";
-//    String password = "2112";
     DBConnectionProvider dbConnectionProvider;
+    ServiceCompanyRepository serviceCompanyRepository;
     public AutoRepository(DBConnectionProvider newDBConnectionProvider)
     {
         dbConnectionProvider = newDBConnectionProvider;
+        serviceCompanyRepository = new ServiceCompanyRepository(newDBConnectionProvider);
+        createCustomersTableIfNotExistsAuto();
     }
     @Override
     public boolean create(Auto auto){
@@ -30,9 +28,8 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
             String autoVin = auto.getVin();
             String nameServiceCompany = auto.getNameServiceCompany();
             result = true;
-            //System.out.println("INSERT INTO \"Auto\" (\"Vin\", \"NameServiceCompany\") VALUES (" +"'" + autoVin+"'" + ", " + "'" + nameServiceCompany + "'" + ")");
+            System.out.println("INSERT INTO \"Auto\" (\"Vin\", \"NameServiceCompany\") VALUES (" +"'" + autoVin+"'" + ", " + "'" + nameServiceCompany + "'" + ")");
             statement.executeUpdate("INSERT INTO \"Auto\" (\"Vin\", \"NameServiceCompany\") VALUES (" +"'" + autoVin+"'" + ", " + "'" + nameServiceCompany + "'" + ")");
-
         }
         catch(Exception ex){
         }
@@ -76,15 +73,17 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     public String get(String vin)
     {
         String res = null;
-        //getPostgresConnection();
         try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
+
             String sql= "SELECT \"NameServiceCompany\" FROM \"Auto\" WHERE \"Vin\" = '" + vin + "'";
+            System.out.println(sql);
+            statement.executeQuery(sql).toString();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next())
             {
-                return rs.getString(1);
+                res = rs.getString(1);
             }
 
         }
@@ -96,24 +95,23 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
     @Override
     public List<String> getAllAutoServiceCompany()
     {
-        //getPostgresConnection();
+        List<String> result = new ArrayList<>();
         try(Connection conn = dbConnectionProvider.getConnection())
         {
             Statement statement = conn.createStatement();
             String sql= "SELECT \"NameServiceCompany\" FROM \"Auto\"";
+
             ResultSet rs = statement.executeQuery(sql);
-            List<String> result = new ArrayList<>();
+            System.out.println(rs.getString("NameServiceCompany"));
             while (rs.next())
             {
                 result.add(rs.getString("NameServiceCompany"));
-                //System.out.println(rs.getString("NameServiceCompany"));
             }
-            return result;
         }
         catch(Exception ex){
 
         }
-        return null;
+        return result;
     }
 
     @Override
@@ -167,6 +165,20 @@ public class AutoRepository implements Repository<Auto, String>, RepositoryAuto{
                 result = true;
             }
         }
-        return result;
+       return false;
+    }
+    private void createCustomersTableIfNotExistsAuto()
+    {
+        try (Connection conn = this.dbConnectionProvider.getConnection())
+        {
+            PreparedStatement pstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS \"Auto\"(\n" +
+                    "    \"Vin\" character varying NOT NULL primary key,\n" +
+                    "    \"NameServiceCompany\" character varying NOT NULL\n" +
+                    ")");
+            pstmt.execute();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

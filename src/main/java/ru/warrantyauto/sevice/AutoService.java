@@ -15,8 +15,9 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
     String url = "jdbc:postgresql://localhost:5432/auto_dealer";
     String user = "postgres";
     String password = "2112";
-    final AutoRepository autoRepository = new AutoRepository(new DBConnectionProvider(url, user, password));
-    final ServiceCompanyRepository  serviceCompanyRepository = new ServiceCompanyRepository();
+    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider(url, user, password);
+    final AutoRepository autoRepository = new AutoRepository(dbConnectionProvider);
+    final ServiceCompanyRepository  serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
     @Override
     public boolean deleteAuto(String vin)
     {
@@ -28,7 +29,7 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
     public boolean addAuto(String newVin, String nameServiceCompany)
     {
         boolean res = false;
-        ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
+        ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(!setServiceCompany.add(nameServiceCompany))
         {

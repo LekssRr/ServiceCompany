@@ -14,8 +14,12 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
     String url = "jdbc:postgresql://localhost:5432/auto_dealer";
     String user = "postgres";
     String password = "2112";
-    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider(url, user, password);
-
+    DBConnectionProvider dbConnectionProvider;
+    public ServiceCompanyRepository(DBConnectionProvider newDbConnectionProvider)
+    {
+        dbConnectionProvider = newDbConnectionProvider;
+        createCustomersTableIfNotExistsServiceCompany();
+    }
     @Override
     public boolean create(ServiceCompany serviceCompany)
     {
@@ -259,13 +263,13 @@ public class ServiceCompanyRepository implements Repository<ServiceCompany, List
         this.create(newCompany);
         return true;
     }
-    private void createCustomersTableIfNotExistsServiceCompany() throws SQLException {
+    private void createCustomersTableIfNotExistsServiceCompany(){
         try (Connection conn = this.dbConnectionProvider.getConnection())
         {
-            PreparedStatement pstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS \"ServiceCompany\" (\n" +
-                    "\"ServiceCompany\" character varying NOT NULL primary key ,\n" +
-                    "\"VinList\" text[]\n" +
-                    ")");
+            PreparedStatement pstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS \"ServiceCompany\"(\n" +
+                            "    \"ServiceCompany\" character varying NOT NULL primary key,\n" +
+                            "    \"VinList\" text[]\n" +
+                            ")");
             pstmt.execute();
         }
         catch (SQLException e) {

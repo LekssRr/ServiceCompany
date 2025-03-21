@@ -15,8 +15,9 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
     String url = "jdbc:postgresql://localhost:5432/auto_dealer";
     String user = "postgres";
     String password = "2112";
-    final ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository();
-    final AutoRepository autoRepository = new AutoRepository(new DBConnectionProvider(url, user, password));
+    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider(url, user, password);
+    final ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
+    final AutoRepository autoRepository = new AutoRepository(dbConnectionProvider);
     @Override
     public boolean addServiceCompany(String nameServiceCompany)
     {
