@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 
-public class AutoDTOTest {
+public class AutoEntityTest {
 
     @Test
     void getVinTest()

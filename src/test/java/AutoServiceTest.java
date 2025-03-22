@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
+import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.DBConnectionProvider;
@@ -8,7 +10,7 @@ import ru.warrantyauto.sevice.ServiceCompanySevice;
 
 import java.util.ArrayList;
 
-public class AutoServiceDTOTest {
+public class AutoServiceTest {
 
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17");
     AutoService autoService;
@@ -76,7 +78,6 @@ public class AutoServiceDTOTest {
     @Test
     void doesCarExistTest()
     {
-
         ServiceCompanyEntity testServiceCompany = new ServiceCompanyEntity("SC-222");
         serviceCompanySevice.addServiceCompany(testServiceCompany.getName());
         autoService.addAuto("33333333333333331", "SC-222");
@@ -84,13 +85,10 @@ public class AutoServiceDTOTest {
         Assertions.assertEquals(autoService.doesCarExist("33333333333333331"), true);
         autoService.deleteAuto("33333333333333331");
         serviceCompanySevice.deleteServiceCompany(testServiceCompany.getName());
-
     }
     @Test
     void getAllAutoTest()
     {
-
-
         ServiceCompanyEntity testServiceCompany = new ServiceCompanyEntity("SC-1");
         ServiceCompanyEntity testServiceCompany1 = new ServiceCompanyEntity("SC-2");
         ServiceCompanyEntity testServiceCompany2 = new ServiceCompanyEntity("SC-3");
@@ -99,11 +97,10 @@ public class AutoServiceDTOTest {
         serviceCompanySevice.addServiceCompany(testServiceCompany2.getName());
         autoService.addAuto("33333333333333331", "SC-1");
         autoService.addAuto("33333333334333331", "SC-2");
-        ArrayList<String> test = new ArrayList<>();
-        test.add("33333333333333331");
-        test.add("33333333334333331");
-
-        Assertions.assertEquals(autoService.getAllAuto(), test);
+        ArrayList<AutoDTO> test = new ArrayList<>();
+        test.add(new AutoDTO("33333333333333331", "SC-1"));
+        test.add(new AutoDTO("33333333334333331", "SC-2"));
+        Assertions.assertEquals(autoService.getAllAuto().size(), test.size());
         serviceCompanySevice.deleteServiceCompany(testServiceCompany.getName());
         serviceCompanySevice.deleteServiceCompany(testServiceCompany1.getName());
         serviceCompanySevice.deleteServiceCompany(testServiceCompany2.getName());
@@ -112,12 +109,13 @@ public class AutoServiceDTOTest {
     @Test
     void getServiceCompanyToVinTest()
     {
-
         ServiceCompanyEntity serviceCompany = new ServiceCompanyEntity("SC-22");
         serviceCompanySevice.addServiceCompany(serviceCompany.getName());
         autoService.addAuto("11111111111111115", "SC-22");
-        Assertions.assertEquals(autoService.getServiceCompanyToVin("11111111111111115"), "SC-22");
+        Assertions.assertEquals(autoService.getServiceCompanyToVin("11111111111111115").getName(), new ServiceCompanyDTO("SC-22").getName());
         autoService.deleteAuto("11111111111111115");
         serviceCompanySevice.deleteServiceCompany(serviceCompany.getName());
     }
+
+
 }

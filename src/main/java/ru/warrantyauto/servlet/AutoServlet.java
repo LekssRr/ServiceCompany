@@ -46,7 +46,7 @@ public class AutoServlet extends HttpServlet {
                 }
                 if(urlRequest[3].equals("vin"))
                 {
-                    response.getWriter().write(autoService.getServiceCompanyToVin(urlRequest[4]));
+                    response.getWriter().write(autoService.getServiceCompanyToVin(urlRequest[4]).getName());
                 }
             }
     }

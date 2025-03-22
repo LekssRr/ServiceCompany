@@ -13,6 +13,11 @@ public class AutoDTO extends DTO
         this.nameServiceCompany = newNameServiceCompany;
         this.serviceCompan = new ServiceCompanyEntity(nameServiceCompany);
     }
+    public AutoDTO(String newVinCode)
+    {
+        this.vinCode = newVinCode;
+    }
+
 
     public String getVin()
     {

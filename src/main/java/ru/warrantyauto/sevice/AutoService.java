@@ -1,5 +1,7 @@
 package ru.warrantyauto.sevice;
 
+import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.AutoRepository;
@@ -45,13 +47,19 @@ public class AutoService implements IAutoService {
     }
 
     @Override
-    public String getServiceCompanyToVin(String vin) {
-        return autoRepository.get(vin);
+    public ServiceCompanyDTO getServiceCompanyToVin(String vin) {
+        ServiceCompanyDTO result = new ServiceCompanyDTO(autoRepository.get(vin));
+        return result;
     }
 
     @Override
-    public List<String> getAllAuto(){
-        List<String> result = new ArrayList<>(autoRepository.getAllAutoVin());
+    public List<AutoDTO> getAllAuto(){
+        List<AutoDTO> result = new ArrayList<>();
+        List<String> resultString = new ArrayList<>(autoRepository.getAllAutoVin());
+        for (int i = 0; i<= resultString.size()-1; i++)
+        {
+            result.add(new AutoDTO(resultString.get(i).toString()));
+        }
         return result;
     };
     @Override
@@ -76,7 +84,7 @@ public class AutoService implements IAutoService {
 
     @Override
     public boolean updateAuto(String vin, String newNameServiceCompany) {
-        String deleteVinSC = this.getServiceCompanyToVin(vin);
+        String deleteVinSC = this.getServiceCompanyToVin(vin).getName();
         AutoEntity deleteAuto = new AutoEntity(vin, deleteVinSC, new ServiceCompanyEntity(deleteVinSC));
         AutoEntity updateAuto = new AutoEntity(vin, newNameServiceCompany, new ServiceCompanyEntity(newNameServiceCompany));
         serviceCompanyRepository.addVinToServiceCompany(updateAuto);
