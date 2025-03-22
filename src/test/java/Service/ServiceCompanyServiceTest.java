@@ -1,5 +1,8 @@
+package Service;
+
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.DBConnectionProvider;
@@ -108,5 +111,23 @@ public class ServiceCompanyServiceTest {
         autoService.addAuto(b.getVin(), b.getNameServiceCompany());
         autoService.addAuto(c.getVin(), c.getNameServiceCompany());
         Assertions.assertEquals(autoService.doesCarToServiceCompany(a.getVin(), a.getNameServiceCompany()), true);
+    }
+    @Test
+    void getAllServiceCompanyTest()
+    {
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-91");
+        ServiceCompanyEntity sc1 = new ServiceCompanyEntity("SC-92");
+        ServiceCompanyEntity sc2 = new ServiceCompanyEntity("SC-93");
+        serviceCompanySevice.addServiceCompany(sc.getName());
+        serviceCompanySevice.addServiceCompany(sc1.getName());
+        serviceCompanySevice.addServiceCompany(sc2.getName());
+        ArrayList<ServiceCompanyDTO> serviceCompanyDTOs = new ArrayList<>();
+        ServiceCompanyDTO scd = new ServiceCompanyDTO("SC-91");
+        ServiceCompanyDTO scd1 = new ServiceCompanyDTO("SC-92");
+        ServiceCompanyDTO scd2 = new ServiceCompanyDTO("SC-93");
+        serviceCompanyDTOs.add(scd);
+        serviceCompanyDTOs.add(scd1);
+        serviceCompanyDTOs.add(scd2);
+        Assertions.assertEquals(serviceCompanySevice.getAllServiceCompany().size()-1, serviceCompanyDTOs.size());
     }
 }

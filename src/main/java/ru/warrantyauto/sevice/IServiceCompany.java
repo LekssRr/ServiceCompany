@@ -1,5 +1,7 @@
 package ru.warrantyauto.sevice;
 
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
+
 import java.util.List;
 
 public interface IServiceCompany {
@@ -7,7 +9,7 @@ public interface IServiceCompany {
     {
         return null;
     }
-    default List<String> getAllServiceCompany() {return null;}
+    default List<ServiceCompanyDTO> getAllServiceCompany() {return null;}
     boolean addServiceCompany(String nameServiceCompany);
     boolean updateServiceCompany(String oldServiceCompanyName, String newServiceCompanyName);
     boolean deleteServiceCompany(String nameServiceCompany);

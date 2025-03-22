@@ -1,5 +1,6 @@
 package ru.warrantyauto.sevice;
 
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.AutoRepository;
@@ -57,9 +58,14 @@ public class ServiceCompanySevice implements IServiceCompany {
     }
 
     @Override
-    public List<String> getAllServiceCompany() {
+    public List<ServiceCompanyDTO> getAllServiceCompany() {
 
-        return serviceCompanyRepository.getAllServiceCompany();
+        ArrayList<ServiceCompanyDTO> result = new ArrayList<>();
+        for (int i =0; i<= serviceCompanyRepository.getAllServiceCompany().size()-1; i++)
+        {
+            result.add(new ServiceCompanyDTO(serviceCompanyRepository.getAllServiceCompany().get(i)));
+        }
+        return result;
     }
 
     @Override

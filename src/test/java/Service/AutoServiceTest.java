@@ -1,3 +1,5 @@
+package Service;
+
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import ru.warrantyauto.DTO.AutoDTO;

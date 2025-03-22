@@ -1,19 +1,14 @@
-import jakarta.servlet.RequestDispatcher;
+package Servlet;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.testcontainers.containers.PostgreSQLContainer;
-import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.servlet.AutoServlet;
-import ru.warrantyauto.sevice.AutoService;
-import ru.warrantyauto.sevice.ServiceCompanySevice;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
 import static org.mockito.Mockito.*;

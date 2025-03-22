@@ -1,19 +1,22 @@
+package DTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 
 import java.util.ArrayList;
 
-public class ServiceCompanyEntityTest {
+public class ServiceCompanyDTOTest {
     @Test
     void getNameTest(){
-        ServiceCompanyEntity serviceCompany = new ServiceCompanyEntity("SC-89");
+        ServiceCompanyDTO serviceCompany = new ServiceCompanyDTO("SC-89");
         Assertions.assertEquals(serviceCompany.getName(), "SC-89");
     }
     @Test
     void allVinAutoTest()
     {
-        ServiceCompanyEntity serviceCompany = new ServiceCompanyEntity("SC-89");
+        ServiceCompanyDTO serviceCompany = new ServiceCompanyDTO("SC-89");
         ArrayList<String> test = new ArrayList<>();
         test.add("1");
         test.add("2");
@@ -24,8 +27,7 @@ public class ServiceCompanyEntityTest {
     @Test
     void toStringTest()
     {
-        ServiceCompanyEntity serviceCompany = new ServiceCompanyEntity("SC-89");
+        ServiceCompanyDTO serviceCompany = new ServiceCompanyDTO("SC-89");
         Assertions.assertEquals(serviceCompany.toString(), "SC-89");
     }
-
 }
