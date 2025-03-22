@@ -11,11 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto {
-
-//    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-//    String user = "postgres";
-//    String password = "2112";
+public class AutoService implements IAutoService {
 
     DBConnectionProvider dbConnectionProvider;
     final AutoRepository autoRepository;
@@ -87,21 +83,4 @@ public class AutoService implements DeleteAuto, AddAuto, GetInfoAuto, UpdateAuto
         serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.update(updateAuto);
     }
-}
-
-
-interface GetInfoAuto{
-    String getServiceCompanyToVin(String vin);
-    List<String> getAllAuto();
-    boolean doesCarExist(String autoVin);
-    boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany);
-}
-interface DeleteAuto {
-    boolean deleteAuto(String vin);
-}
-interface AddAuto{
-    boolean addAuto(String newVin, String nameServiceCompany);
-}
-interface UpdateAuto {
-    boolean updateAuto(String vin, String newNameServiceCompany);
 }

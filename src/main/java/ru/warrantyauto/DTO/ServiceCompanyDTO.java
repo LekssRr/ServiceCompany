@@ -20,11 +20,6 @@ public class ServiceCompanyDTO extends DTO {
     {
         return name;
     }
-    public void addAuto(AutoDTO newAuto)
-    {
-        allAuto.add(newAuto);
-        allVin.add(newAuto.getVin());
-    }
     public void setAllVin(ArrayList<String> newVin)
     {
         allVin.addAll(newVin);

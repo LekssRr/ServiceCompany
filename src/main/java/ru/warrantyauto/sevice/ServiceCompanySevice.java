@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCompany, GetServiceCompany {
+public class ServiceCompanySevice implements IServiceCompany {
 
     DBConnectionProvider dbConnectionProvider;
     final ServiceCompanyRepository serviceCompanyRepository;
@@ -81,21 +81,4 @@ public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCom
         }
         return false;
     }
-}
-
-interface GetServiceCompany{
-    default String getAllVinServiceCompany(String nameServiceCompany)
-    {
-        return null;
-    }
-    default List<String> getAllServiceCompany() {return null;}
-}
-interface AddServiceCompany{
-
-    boolean addServiceCompany(String nameServiceCompany);
-    boolean updateServiceCompany(String oldServiceCompanyName, String newServiceCompanyName);
-}
-interface DeleteServiceCompany
-{
-    boolean deleteServiceCompany(String nameServiceCompany);
 }
