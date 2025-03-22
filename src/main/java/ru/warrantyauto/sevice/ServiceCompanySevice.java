@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.Set;
 
 public class ServiceCompanySevice implements AddServiceCompany, DeleteServiceCompany, GetServiceCompany {
-//    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-//    String user = "postgres";
-//    String password = "2112";
 
     DBConnectionProvider dbConnectionProvider;
     final ServiceCompanyRepository serviceCompanyRepository;
