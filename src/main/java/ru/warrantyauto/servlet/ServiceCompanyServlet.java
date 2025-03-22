@@ -23,24 +23,24 @@ public class ServiceCompanyServlet extends HttpServlet {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
 
-        if(urlRequest[2].equals("POST"))
+        if(this.postInUrl(urlRequest))
         {
             doPost(request, response);
         }
-        else if (urlRequest[2].equals("GET"))
+        else if (this.getInUrl(urlRequest))
         {
             if(urlRequest.length == 3)
             {
                 //response.getWriter().write(DataBase.getPostgresConnection().getCatalog());
-                response.getWriter().write(serviceCompanyService.getAllServiceCompany().toString());
+                    response.getWriter().write(serviceCompanyService.getAllServiceCompany().toString());
             }
             else if(urlRequest.length >=4)
             {
                 response.getWriter().write(serviceCompanyService.getAllVinServiceCompany(urlRequest[3]));
             }
-        } else if (urlRequest[2].equals("DELETE")) {
+        } else if (this.deleteInUrl(urlRequest)) {
             doPost(request, response);
-        } else if (urlRequest[2].equals("PUT")) {
+        } else if (this.putInUrl(urlRequest)) {
             doPost(request,response);
         }
     }
@@ -49,7 +49,7 @@ public class ServiceCompanyServlet extends HttpServlet {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
 
-        if(urlRequest[2].equals("POST"))
+        if(this.postInUrl(urlRequest))
         {
             if(serviceCompanyService.addServiceCompany(urlRequest[3]))
             {
@@ -60,7 +60,7 @@ public class ServiceCompanyServlet extends HttpServlet {
             {
                 response.getWriter().write("NotAddSK" + "\n");
             }
-        } else if (urlRequest[2].equals("DELETE")) {
+        } else if (deleteInUrl(urlRequest)) {
 
             if(!serviceCompanyService.addServiceCompany(urlRequest[3]))
             {
@@ -71,7 +71,7 @@ public class ServiceCompanyServlet extends HttpServlet {
             {
                 response.getWriter().write("NotSK" + "\n");
             }
-        }else if(urlRequest[2].equals("PUT"))
+        }else if(this.putInUrl(urlRequest))
         {
             if(!serviceCompanyService.addServiceCompany(urlRequest[3]))
             {
@@ -87,6 +87,21 @@ public class ServiceCompanyServlet extends HttpServlet {
 
         }
     }
-
+    public boolean getInUrl(String[] urlRequest)
+    {
+        return urlRequest[2].equals("GET");
+    }
+    public boolean postInUrl(String[] urlRequest)
+    {
+        return urlRequest[2].equals("POST");
+    }
+    public boolean deleteInUrl(String[] urlRequest)
+    {
+        return urlRequest[2].equals("DELETE");
+    }
+    public boolean putInUrl(String[] urlRequest)
+    {
+        return urlRequest[2].equals("PUT");
+    }
 }
 
