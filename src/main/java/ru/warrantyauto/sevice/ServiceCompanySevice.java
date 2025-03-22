@@ -1,7 +1,7 @@
 package ru.warrantyauto.sevice;
 
-import ru.warrantyauto.DTO.AutoDTO;
-import ru.warrantyauto.DTO.ServiceCompanyDTO;
+import ru.warrantyauto.entity.AutoEntity;
+import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
@@ -28,7 +28,7 @@ public class ServiceCompanySevice implements IServiceCompany {
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(setServiceCompany.add(nameServiceCompany))
         {
-            serviceCompanyRepository.create(new ServiceCompanyDTO(nameServiceCompany));
+            serviceCompanyRepository.create(new ServiceCompanyEntity(nameServiceCompany));
             return true;
         }
         return false;
@@ -40,12 +40,12 @@ public class ServiceCompanySevice implements IServiceCompany {
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(!setServiceCompany.add(nameServiceCompany))
         {
-            ArrayList<String> vinListDeleteAuto = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyDTO(nameServiceCompany)));
+            ArrayList<String> vinListDeleteAuto = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyEntity(nameServiceCompany)));
             for(int i = 0; i <= vinListDeleteAuto.size()-1; i++)
             {
-                autoRepository.delete(new AutoDTO(vinListDeleteAuto.get(i), nameServiceCompany, new ServiceCompanyDTO(nameServiceCompany)));
+                autoRepository.delete(new AutoEntity(vinListDeleteAuto.get(i), nameServiceCompany, new ServiceCompanyEntity(nameServiceCompany)));
             }
-            serviceCompanyRepository.delete(new ServiceCompanyDTO(nameServiceCompany));
+            serviceCompanyRepository.delete(new ServiceCompanyEntity(nameServiceCompany));
             return true;
         }
         return false;
@@ -53,7 +53,7 @@ public class ServiceCompanySevice implements IServiceCompany {
     @Override
     public String getAllVinServiceCompany(String nameServiceCompany)
     {
-        return serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyDTO(nameServiceCompany)).toString();
+        return serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyEntity(nameServiceCompany)).toString();
     }
 
     @Override
@@ -68,14 +68,14 @@ public class ServiceCompanySevice implements IServiceCompany {
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(!setServiceCompany.add(oldServiceCompanyName))
         {
-            ArrayList<String> vinList = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyDTO(oldServiceCompanyName)));
+            ArrayList<String> vinList = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyEntity(oldServiceCompanyName)));
 
             System.out.println(vinList);
-            serviceCompanyRepository.updateServiceCompany(new ServiceCompanyDTO(oldServiceCompanyName), new ServiceCompanyDTO(newServiceCompanyName));
+            serviceCompanyRepository.updateServiceCompany(new ServiceCompanyEntity(oldServiceCompanyName), new ServiceCompanyEntity(newServiceCompanyName));
             for(int i = 0; i<vinList.size(); i++)
             {
-                autoRepository.delete(new AutoDTO(vinList.get(i), oldServiceCompanyName, new ServiceCompanyDTO(oldServiceCompanyName)));
-                autoRepository.create(new AutoDTO(vinList.get(i), newServiceCompanyName, new ServiceCompanyDTO(newServiceCompanyName)));
+                autoRepository.delete(new AutoEntity(vinList.get(i), oldServiceCompanyName, new ServiceCompanyEntity(oldServiceCompanyName)));
+                autoRepository.create(new AutoEntity(vinList.get(i), newServiceCompanyName, new ServiceCompanyEntity(newServiceCompanyName)));
             }
             return true;
         }

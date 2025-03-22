@@ -1,7 +1,7 @@
 package ru.warrantyauto.sevice;
 
-import ru.warrantyauto.DTO.AutoDTO;
-import ru.warrantyauto.DTO.ServiceCompanyDTO;
+import ru.warrantyauto.entity.AutoEntity;
+import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
@@ -25,7 +25,7 @@ public class AutoService implements IAutoService {
     @Override
     public boolean deleteAuto(String vin)
     {
-        AutoDTO deleteAuto = new AutoDTO(vin, autoRepository.get(vin), new ServiceCompanyDTO(autoRepository.get(vin)));
+        AutoEntity deleteAuto = new AutoEntity(vin, autoRepository.get(vin), new ServiceCompanyEntity(autoRepository.get(vin)));
         serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.delete(deleteAuto);
     }
@@ -37,7 +37,7 @@ public class AutoService implements IAutoService {
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if(!setServiceCompany.add(nameServiceCompany))
         {
-            AutoDTO newAuto = new AutoDTO(newVin, nameServiceCompany, new ServiceCompanyDTO(nameServiceCompany));
+            AutoEntity newAuto = new AutoEntity(newVin, nameServiceCompany, new ServiceCompanyEntity(nameServiceCompany));
             autoRepository.create(newAuto);
             res = serviceCompanyRepository.addVinToServiceCompany(newAuto);
         }
@@ -70,15 +70,15 @@ public class AutoService implements IAutoService {
     @Override
     public boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany)
     {
-        AutoDTO newAuto = new AutoDTO(autoVin, nameServiceCompany, new ServiceCompanyDTO(nameServiceCompany));
+        AutoEntity newAuto = new AutoEntity(autoVin, nameServiceCompany, new ServiceCompanyEntity(nameServiceCompany));
         return autoRepository.doesCarToServiceCompanyRepository(newAuto);
     }
 
     @Override
     public boolean updateAuto(String vin, String newNameServiceCompany) {
         String deleteVinSC = this.getServiceCompanyToVin(vin);
-        AutoDTO deleteAuto = new AutoDTO(vin, deleteVinSC, new ServiceCompanyDTO(deleteVinSC));
-        AutoDTO updateAuto = new AutoDTO(vin, newNameServiceCompany, new ServiceCompanyDTO(newNameServiceCompany));
+        AutoEntity deleteAuto = new AutoEntity(vin, deleteVinSC, new ServiceCompanyEntity(deleteVinSC));
+        AutoEntity updateAuto = new AutoEntity(vin, newNameServiceCompany, new ServiceCompanyEntity(newNameServiceCompany));
         serviceCompanyRepository.addVinToServiceCompany(updateAuto);
         serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.update(updateAuto);

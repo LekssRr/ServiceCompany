@@ -1,17 +1,15 @@
-package ru.warrantyauto.DTO;
+package ru.warrantyauto.entity;
 
-import ru.warrantyauto.entity.ServiceCompanyEntity;
+public class AutoEntity extends Entity {
 
-public class AutoDTO extends DTO
-{
     private String vinCode;
     private String nameServiceCompany;
     private ServiceCompanyEntity serviceCompan;
-    public AutoDTO(String newVinCode, String newNameServiceCompany)
+    public AutoEntity(String newVinCode, String newNameServiceCompany, ServiceCompanyEntity newServiceCompan)
     {
         this.vinCode = newVinCode;
         this.nameServiceCompany = newNameServiceCompany;
-        this.serviceCompan = new ServiceCompanyEntity(nameServiceCompany);
+        this.serviceCompan = newServiceCompan;
     }
 
     public String getVin()

@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.warrantyauto.DTO.AutoDTO;
-import ru.warrantyauto.DTO.ServiceCompanyDTO;
+import ru.warrantyauto.entity.AutoEntity;
+import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 import ru.warrantyauto.sevice.ServiceCompanySevice;
@@ -41,9 +41,9 @@ public class ServiceCompanyServiceTest {
     @Test
     void addServiceCompanyTest()
     {
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-7");
-        ServiceCompanyDTO sc1 = new ServiceCompanyDTO("SC-5");
-        ServiceCompanyDTO sc2 = new ServiceCompanyDTO("SC-2");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-7");
+        ServiceCompanyEntity sc1 = new ServiceCompanyEntity("SC-5");
+        ServiceCompanyEntity sc2 = new ServiceCompanyEntity("SC-2");
         serviceCompanySevice.addServiceCompany(sc.getName());
         serviceCompanySevice.addServiceCompany(sc1.getName());
         serviceCompanySevice.addServiceCompany(sc2.getName());
@@ -59,9 +59,9 @@ public class ServiceCompanyServiceTest {
     void deleteServiceCompany()
     {
 
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-7");
-        ServiceCompanyDTO sc1 = new ServiceCompanyDTO("SC-5");
-        ServiceCompanyDTO sc2 = new ServiceCompanyDTO("SC-2");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-7");
+        ServiceCompanyEntity sc1 = new ServiceCompanyEntity("SC-5");
+        ServiceCompanyEntity sc2 = new ServiceCompanyEntity("SC-2");
         serviceCompanySevice.addServiceCompany(sc.getName());
         serviceCompanySevice.addServiceCompany(sc1.getName());
         serviceCompanySevice.addServiceCompany(sc2.getName());
@@ -74,11 +74,11 @@ public class ServiceCompanyServiceTest {
     @Test
     void updateServiceCompanyServiceTest()
     {
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-99");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-99");
         ArrayList<String> test = new ArrayList<>();
-        AutoDTO test1 = new AutoDTO("aaaaaa", "SC-99", new ServiceCompanyDTO("SC-99"));
-        AutoDTO test2 = new AutoDTO("bbbbbb", "SC-99", new ServiceCompanyDTO("SC-99"));
-        AutoDTO test3 = new AutoDTO("vvvvvv", "SC-99", new ServiceCompanyDTO("SC-99"));
+        AutoEntity test1 = new AutoEntity("aaaaaa", "SC-99", new ServiceCompanyEntity("SC-99"));
+        AutoEntity test2 = new AutoEntity("bbbbbb", "SC-99", new ServiceCompanyEntity("SC-99"));
+        AutoEntity test3 = new AutoEntity("vvvvvv", "SC-99", new ServiceCompanyEntity("SC-99"));
         test.add("aaaaaa");
         test.add("bbbbbb");
         test.add("vvvvvv");
@@ -99,11 +99,11 @@ public class ServiceCompanyServiceTest {
     {
 
 
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-99");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-99");
         serviceCompanySevice.addServiceCompany(sc.getName());
-        AutoDTO a = new AutoDTO("11111111111111111", sc.getName(), sc);
-        AutoDTO b = new AutoDTO("11111111111111121", sc.getName(), sc);
-        AutoDTO c = new AutoDTO("11111111111111131", sc.getName(), sc);
+        AutoEntity a = new AutoEntity("11111111111111111", sc.getName(), sc);
+        AutoEntity b = new AutoEntity("11111111111111121", sc.getName(), sc);
+        AutoEntity c = new AutoEntity("11111111111111131", sc.getName(), sc);
         autoService.addAuto(a.getVin(), a.getNameServiceCompany());
         autoService.addAuto(b.getVin(), b.getNameServiceCompany());
         autoService.addAuto(c.getVin(), c.getNameServiceCompany());

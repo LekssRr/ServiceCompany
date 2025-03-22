@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.warrantyauto.DTO.AutoDTO;
-import ru.warrantyauto.DTO.ServiceCompanyDTO;
+import ru.warrantyauto.entity.AutoEntity;
+import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.AutoRepository;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
@@ -42,14 +42,14 @@ public class ServiceCompanyContainerTest {
     @Test
     void createServiceCompanyTest()
     {
-        Assertions.assertEquals(serviceCompanyRepository.create(new ServiceCompanyDTO("SC-00")), true);
+        Assertions.assertEquals(serviceCompanyRepository.create(new ServiceCompanyEntity("SC-00")), true);
     }
     @Test
     void getAllServiceCompanyTest()
     {
-        serviceCompanyRepository.create(new ServiceCompanyDTO("SC-001"));
-        serviceCompanyRepository.create(new ServiceCompanyDTO("SC-002"));
-        serviceCompanyRepository.create(new ServiceCompanyDTO("SC-003"));
+        serviceCompanyRepository.create(new ServiceCompanyEntity("SC-001"));
+        serviceCompanyRepository.create(new ServiceCompanyEntity("SC-002"));
+        serviceCompanyRepository.create(new ServiceCompanyEntity("SC-003"));
         List<String> AllServiceCompany = new ArrayList<>();
         AllServiceCompany.add("SC-001");
         AllServiceCompany.add("SC-002");
@@ -59,19 +59,19 @@ public class ServiceCompanyContainerTest {
     @Test
     void deleteVinToServiceCompany()
     {
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-7");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-7");
         ArrayList<String> vinListSC = new ArrayList<>();
         vinListSC.add("1111111");
         vinListSC.add("12312312");
         vinListSC.add("2222222");
         sc.setAllVin(vinListSC);
         serviceCompanyRepository.create(sc);
-        Assertions.assertEquals(serviceCompanyRepository.deleteVinToServiceCompany(new AutoDTO("2222222", "SC-7", new ServiceCompanyDTO("SC-7"))), true);
+        Assertions.assertEquals(serviceCompanyRepository.deleteVinToServiceCompany(new AutoEntity("2222222", "SC-7", new ServiceCompanyEntity("SC-7"))), true);
     }
     @Test
     void getVinToServiceCompany()
     {
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-999");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-999");
         ArrayList<String> test = new ArrayList<>();
         test.add("fsdfsdfs");
         test.add("sdadasdada");
@@ -83,27 +83,27 @@ public class ServiceCompanyContainerTest {
     @Test
     void addVinToServiceCompanyTest()
     {
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-7");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-7");
         serviceCompanyRepository.deleteAllServiceCompany();
         ArrayList<String> vinListSC = new ArrayList<>();
         sc.setAllVin(vinListSC);
         serviceCompanyRepository.create(sc);
-        AutoDTO one = new AutoDTO("7777777", "SC-7", new ServiceCompanyDTO("SC-7"));
-        AutoDTO one1 = new AutoDTO("7771777", "SC-7", new ServiceCompanyDTO("SC-7"));
-        AutoDTO one2 = new AutoDTO("2222", "SC-6", new ServiceCompanyDTO("SC-6"));
-        AutoDTO one3 = new AutoDTO("22222", "SC-6", new ServiceCompanyDTO("SC-6"));
-        AutoDTO one4 = new AutoDTO("333333", "SC-5", new ServiceCompanyDTO("SC-5"));
-        AutoDTO one5 = new AutoDTO("777133333777", "SC-5", new ServiceCompanyDTO("SC-5"));
-        AutoDTO one6 = new AutoDTO("777744444777", "SC-1", new ServiceCompanyDTO("SC-1"));
-        AutoDTO one7 = new AutoDTO("77744441777", "SC-1", new ServiceCompanyDTO("SC-1"));
-        AutoDTO one8 = new AutoDTO("77744441772227", "SC-999", new ServiceCompanyDTO("SC-999"));
-        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoDTO("7777777", "SC-7", new ServiceCompanyDTO("SC-7"))), true);
-        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoDTO("7771777", "SC-7", new ServiceCompanyDTO("SC-7"))), true);
-        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoDTO("2222", "SC-6", new ServiceCompanyDTO("SC-6"))), true);
-        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoDTO("22222", "SC-6", new ServiceCompanyDTO("SC-6"))), true);
-        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoDTO("333333", "SC-5", new ServiceCompanyDTO("SC-5"))), true);
-        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoDTO("777133333777", "SC-5", new ServiceCompanyDTO("SC-5"))), true);
-        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoDTO("77744441772227", "SC-999", new ServiceCompanyDTO("SC-999"))), true);
+        AutoEntity one = new AutoEntity("7777777", "SC-7", new ServiceCompanyEntity("SC-7"));
+        AutoEntity one1 = new AutoEntity("7771777", "SC-7", new ServiceCompanyEntity("SC-7"));
+        AutoEntity one2 = new AutoEntity("2222", "SC-6", new ServiceCompanyEntity("SC-6"));
+        AutoEntity one3 = new AutoEntity("22222", "SC-6", new ServiceCompanyEntity("SC-6"));
+        AutoEntity one4 = new AutoEntity("333333", "SC-5", new ServiceCompanyEntity("SC-5"));
+        AutoEntity one5 = new AutoEntity("777133333777", "SC-5", new ServiceCompanyEntity("SC-5"));
+        AutoEntity one6 = new AutoEntity("777744444777", "SC-1", new ServiceCompanyEntity("SC-1"));
+        AutoEntity one7 = new AutoEntity("77744441777", "SC-1", new ServiceCompanyEntity("SC-1"));
+        AutoEntity one8 = new AutoEntity("77744441772227", "SC-999", new ServiceCompanyEntity("SC-999"));
+        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoEntity("7777777", "SC-7", new ServiceCompanyEntity("SC-7"))), true);
+        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoEntity("7771777", "SC-7", new ServiceCompanyEntity("SC-7"))), true);
+        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoEntity("2222", "SC-6", new ServiceCompanyEntity("SC-6"))), true);
+        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoEntity("22222", "SC-6", new ServiceCompanyEntity("SC-6"))), true);
+        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoEntity("333333", "SC-5", new ServiceCompanyEntity("SC-5"))), true);
+        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoEntity("777133333777", "SC-5", new ServiceCompanyEntity("SC-5"))), true);
+        Assertions.assertEquals(serviceCompanyRepository.addVinToServiceCompany(new AutoEntity("77744441772227", "SC-999", new ServiceCompanyEntity("SC-999"))), true);
         serviceCompanyRepository.deleteAllServiceCompany();
         autoRepository.delete(one);
         autoRepository.delete(one1);
@@ -118,7 +118,7 @@ public class ServiceCompanyContainerTest {
     @Test
     void updateTest()
     {
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-7");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-7");
         ArrayList<String> test = new ArrayList<>();
         test.add("12345");
         test.add("54673");
@@ -131,9 +131,9 @@ public class ServiceCompanyContainerTest {
     @Test
     void deleteAllServiceCompany()
     {
-        ServiceCompanyDTO sc = new ServiceCompanyDTO("SC-7");
-        ServiceCompanyDTO sc1 = new ServiceCompanyDTO("SC-5");
-        ServiceCompanyDTO sc2 = new ServiceCompanyDTO("SC-2");
+        ServiceCompanyEntity sc = new ServiceCompanyEntity("SC-7");
+        ServiceCompanyEntity sc1 = new ServiceCompanyEntity("SC-5");
+        ServiceCompanyEntity sc2 = new ServiceCompanyEntity("SC-2");
         serviceCompanyRepository.create(sc);
         serviceCompanyRepository.create(sc1);
         serviceCompanyRepository.create(sc2);
@@ -142,8 +142,8 @@ public class ServiceCompanyContainerTest {
     @Test
     void updateServicCompanyTest()
     {
-        ServiceCompanyDTO serviceCompanyOld = new ServiceCompanyDTO("SC-22");
-        ServiceCompanyDTO serviceCompanyNew = new ServiceCompanyDTO("SC-33");
+        ServiceCompanyEntity serviceCompanyOld = new ServiceCompanyEntity("SC-22");
+        ServiceCompanyEntity serviceCompanyNew = new ServiceCompanyEntity("SC-33");
         ArrayList<String> vinList= new ArrayList<>();
         vinList.add("11111");
         vinList.add("22222");

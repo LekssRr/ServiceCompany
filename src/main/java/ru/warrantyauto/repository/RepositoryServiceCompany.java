@@ -1,10 +1,10 @@
 package ru.warrantyauto.repository;
 
-import ru.warrantyauto.DTO.ServiceCompanyDTO;
+import ru.warrantyauto.entity.ServiceCompanyEntity;
 
 import java.util.List;
 
 public interface RepositoryServiceCompany {
-    List<String> getAllAutoToServiceCompany(ServiceCompanyDTO nameServiceCompany);
+    List<String> getAllAutoToServiceCompany(ServiceCompanyEntity nameServiceCompany);
     List<String> getAllServiceCompany();
 }

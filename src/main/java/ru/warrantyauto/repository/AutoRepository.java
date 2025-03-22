@@ -1,13 +1,13 @@
 package ru.warrantyauto.repository;
 
-import ru.warrantyauto.DTO.AutoDTO;
-import ru.warrantyauto.DTO.ServiceCompanyDTO;
+import ru.warrantyauto.entity.AutoEntity;
+import ru.warrantyauto.entity.ServiceCompanyEntity;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoRepository implements Repository<AutoDTO, String>, RepositoryAuto{
+public class AutoRepository implements Repository<AutoEntity, String>, RepositoryAuto{
 
     private static Connection connection;
     DBConnectionProvider dbConnectionProvider;
@@ -19,7 +19,7 @@ public class AutoRepository implements Repository<AutoDTO, String>, RepositoryAu
         createCustomersTableIfNotExistsAuto();
     }
     @Override
-    public boolean create(AutoDTO auto){
+    public boolean create(AutoEntity auto){
         boolean result = false;
         //DriverManager.getConnection(url, user, password)
         try(Connection conn = dbConnectionProvider.getConnection())
@@ -36,7 +36,7 @@ public class AutoRepository implements Repository<AutoDTO, String>, RepositoryAu
         return result;
     };
     @Override
-    public boolean update(AutoDTO auto)
+    public boolean update(AutoEntity auto)
     {
         boolean result = false;
         //getPostgresConnection();
@@ -55,7 +55,7 @@ public class AutoRepository implements Repository<AutoDTO, String>, RepositoryAu
         return result;
     }
     @Override
-    public boolean delete(AutoDTO auto)
+    public boolean delete(AutoEntity auto)
     {
         //getPostgresConnection();
         try(Connection conn = dbConnectionProvider.getConnection())
@@ -153,9 +153,9 @@ public class AutoRepository implements Repository<AutoDTO, String>, RepositoryAu
         return result;
     }
 
-    public boolean doesCarToServiceCompanyRepository(AutoDTO auto)
+    public boolean doesCarToServiceCompanyRepository(AutoEntity auto)
     {
-        ArrayList<String> allAutoVin = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyDTO(auto.getNameServiceCompany())));
+        ArrayList<String> allAutoVin = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyEntity(auto.getNameServiceCompany())));
         System.out.println(auto.getNameServiceCompany());
         System.out.println(allAutoVin.size());
         boolean result = false;

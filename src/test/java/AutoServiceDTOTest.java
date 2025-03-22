@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.warrantyauto.DTO.AutoDTO;
-import ru.warrantyauto.DTO.ServiceCompanyDTO;
+import ru.warrantyauto.entity.AutoEntity;
+import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 import ru.warrantyauto.sevice.ServiceCompanySevice;
@@ -43,7 +43,7 @@ public class AutoServiceDTOTest {
     public void deleteAutoTest()
     {
 
-        new AutoDTO("22222222222222222", "SC-2", new ServiceCompanyDTO("SC-2"));
+        new AutoEntity("22222222222222222", "SC-2", new ServiceCompanyEntity("SC-2"));
         autoService.addAuto("22222222222222222", "SC-2");
         Assertions.assertEquals(autoService.deleteAuto("22222222222222222"), true);
 
@@ -52,11 +52,11 @@ public class AutoServiceDTOTest {
     public void addAutoTest()
     {
 
-        serviceCompanySevice.addServiceCompany(new ServiceCompanyDTO("SC-1").getName());
+        serviceCompanySevice.addServiceCompany(new ServiceCompanyEntity("SC-1").getName());
         Assertions.assertEquals(autoService.addAuto("11111", "SC-1"), true);
         Assertions.assertEquals(autoService.addAuto("11121", "SC-1"), true);
         Assertions.assertEquals(autoService.addAuto("13111", "SC-1"), true);
-        serviceCompanySevice.deleteServiceCompany(new ServiceCompanyDTO("SC-1").getName());
+        serviceCompanySevice.deleteServiceCompany(new ServiceCompanyEntity("SC-1").getName());
         autoService.deleteAuto("11121");
         autoService.deleteAuto("13111");
 
@@ -64,7 +64,7 @@ public class AutoServiceDTOTest {
     @Test
     public void updateAutoTest()
     {
-        ServiceCompanyDTO testServiceCompany = new ServiceCompanyDTO("SC-1");
+        ServiceCompanyEntity testServiceCompany = new ServiceCompanyEntity("SC-1");
         serviceCompanySevice.addServiceCompany(testServiceCompany.getName());
         autoService.addAuto("22222", "SC-1");
         Assertions.assertEquals(autoService.updateAuto("22222", "SC-2"), true);
@@ -77,10 +77,10 @@ public class AutoServiceDTOTest {
     void doesCarExistTest()
     {
 
-        ServiceCompanyDTO testServiceCompany = new ServiceCompanyDTO("SC-222");
+        ServiceCompanyEntity testServiceCompany = new ServiceCompanyEntity("SC-222");
         serviceCompanySevice.addServiceCompany(testServiceCompany.getName());
         autoService.addAuto("33333333333333331", "SC-222");
-        AutoDTO testAuto = new AutoDTO("33333333333333331", "SC-222", new ServiceCompanyDTO("SC-222"));
+        AutoEntity testAuto = new AutoEntity("33333333333333331", "SC-222", new ServiceCompanyEntity("SC-222"));
         Assertions.assertEquals(autoService.doesCarExist("33333333333333331"), true);
         autoService.deleteAuto("33333333333333331");
         serviceCompanySevice.deleteServiceCompany(testServiceCompany.getName());
@@ -91,9 +91,9 @@ public class AutoServiceDTOTest {
     {
 
 
-        ServiceCompanyDTO testServiceCompany = new ServiceCompanyDTO("SC-1");
-        ServiceCompanyDTO testServiceCompany1 = new ServiceCompanyDTO("SC-2");
-        ServiceCompanyDTO testServiceCompany2 = new ServiceCompanyDTO("SC-3");
+        ServiceCompanyEntity testServiceCompany = new ServiceCompanyEntity("SC-1");
+        ServiceCompanyEntity testServiceCompany1 = new ServiceCompanyEntity("SC-2");
+        ServiceCompanyEntity testServiceCompany2 = new ServiceCompanyEntity("SC-3");
         serviceCompanySevice.addServiceCompany(testServiceCompany.getName());
         serviceCompanySevice.addServiceCompany(testServiceCompany1.getName());
         serviceCompanySevice.addServiceCompany(testServiceCompany2.getName());
@@ -113,7 +113,7 @@ public class AutoServiceDTOTest {
     void getServiceCompanyToVinTest()
     {
 
-        ServiceCompanyDTO serviceCompany = new ServiceCompanyDTO("SC-22");
+        ServiceCompanyEntity serviceCompany = new ServiceCompanyEntity("SC-22");
         serviceCompanySevice.addServiceCompany(serviceCompany.getName());
         autoService.addAuto("11111111111111115", "SC-22");
         Assertions.assertEquals(autoService.getServiceCompanyToVin("11111111111111115"), "SC-22");

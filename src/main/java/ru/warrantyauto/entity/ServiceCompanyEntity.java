@@ -1,20 +1,19 @@
-package ru.warrantyauto.DTO;
-
-import ru.warrantyauto.entity.AutoEntity;
+package ru.warrantyauto.entity;
 
 import java.util.ArrayList;
 
-public class ServiceCompanyDTO extends DTO{
+public class ServiceCompanyEntity extends Entity {
+
     String name;
-    ArrayList<AutoDTO> allAuto = new ArrayList<>();
+    ArrayList<AutoEntity> allAuto = new ArrayList<>();
     ArrayList<String> allVin = new ArrayList<>();
 
-    public ServiceCompanyDTO(String newName)
+    public ServiceCompanyEntity(String newName)
     {
         this.name = newName;
         for(int i = 0; i<=allVin.size()-1; i++)
         {
-            allAuto.add(new AutoDTO(allVin.get(i), this.getName()));
+            allAuto.add(new AutoEntity(allVin.get(i), this.getName(), this));
         }
     }
     public String getName()
@@ -26,7 +25,7 @@ public class ServiceCompanyDTO extends DTO{
         allVin.addAll(newVin);
         for(int i = 0; i<=allVin.size()-1; i++)
         {
-            allAuto.add(new AutoDTO(allVin.get(i), this.getName()));
+            allAuto.add(new AutoEntity(allVin.get(i), this.getName(), this));
         }
     }
     public ArrayList<String> allVinAuto()

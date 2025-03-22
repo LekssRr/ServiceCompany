@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.warrantyauto.DTO.AutoDTO;
+import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 
@@ -18,7 +18,7 @@ public class AutoServlet extends HttpServlet {
     String url = "jdbc:postgresql://localhost:5432/auto_dealer";
     String user = "postgres";
     String password = "2112";
-    private AutoDTO auto;
+    private AutoEntity auto;
     private AutoService autoService = new AutoService(new DBConnectionProvider(url, user, password));
     @Override
     public void init() {
