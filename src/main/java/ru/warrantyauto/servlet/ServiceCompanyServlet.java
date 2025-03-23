@@ -23,24 +23,18 @@ public class ServiceCompanyServlet extends HttpServlet {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
 
-        if(this.postInUrl(urlRequest))
-        {
+        if (this.postInUrl(urlRequest)) {
             doPost(request, response);
-        }
-        else if (this.getInUrl(urlRequest))
-        {
-            if(urlRequest.length == 3)
-            {
-                    response.getWriter().write(serviceCompanyService.getAllServiceCompany().toString());
-            }
-            else if(urlRequest.length >=4)
-            {
+        } else if (this.getInUrl(urlRequest)) {
+            if (urlRequest.length == 3) {
+                response.getWriter().write(serviceCompanyService.getAllServiceCompany().toString());
+            } else if (urlRequest.length >= 4) {
                 response.getWriter().write(serviceCompanyService.getAllVinServiceCompany(urlRequest[3]));
             }
         } else if (this.deleteInUrl(urlRequest)) {
             doPost(request, response);
         } else if (this.putInUrl(urlRequest)) {
-            doPost(request,response);
+            doPost(request, response);
         }
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -48,40 +42,28 @@ public class ServiceCompanyServlet extends HttpServlet {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
 
-        if(this.postInUrl(urlRequest))
-        {
-            if(serviceCompanyService.addServiceCompany(urlRequest[3]))
-            {
+        if (this.postInUrl(urlRequest)) {
+            if (serviceCompanyService.addServiceCompany(urlRequest[3])) {
                 response.getWriter().write("AddSk" + "\n");
                 serviceCompanyService.addServiceCompany(urlRequest[3]);
-            }
-            else
-            {
+            } else {
                 response.getWriter().write("NotAddSK" + "\n");
             }
         } else if (deleteInUrl(urlRequest)) {
 
-            if(!serviceCompanyService.addServiceCompany(urlRequest[3]))
-            {
+            if (!serviceCompanyService.addServiceCompany(urlRequest[3])) {
                 response.getWriter().write("Delete SC" + "\n");
                 serviceCompanyService.deleteServiceCompany(urlRequest[3]);
-            }
-            else
-            {
+            } else {
                 response.getWriter().write("NotSK" + "\n");
             }
-        }else if(this.putInUrl(urlRequest))
-        {
-            if(!serviceCompanyService.addServiceCompany(urlRequest[3]))
-            {
-               if (serviceCompanyService.updateServiceCompany(urlRequest[3], urlRequest[4]))
-                {
+        } else if (this.putInUrl(urlRequest)) {
+            if (!serviceCompanyService.addServiceCompany(urlRequest[3])) {
+                if (serviceCompanyService.updateServiceCompany(urlRequest[3], urlRequest[4])) {
                     response.getWriter().write("true");
+                } else {
+                    response.getWriter().write("false");
                 }
-               else
-               {
-                   response.getWriter().write("false");
-               }
             }
 
         }

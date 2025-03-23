@@ -27,28 +27,23 @@ public class AutoServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-            String url = request.getRequestURI();
-            Map<String, String[]> param = request.getParameterMap();
-            String[] urlRequest = url.split("/");
-            if (this.putInUrl(urlRequest))
-            {
-                this.doPost(request,response);
-            }else if(this.postInUrl(urlRequest))
-            {
-                this.doPost(request,response);
-            } else if (this.deleteInUrl(urlRequest)) {
-                this.doPost(request,response);
-            } else if(urlRequest[2].equals("GET"))
-            {
-                if(urlRequest.length == 3)
-                {
-                    response.getWriter().write(autoService.getAllAuto().toString());
-                }
-                if(urlRequest[3].equals("vin"))
-                {
-                    response.getWriter().write(autoService.getServiceCompanyToVin(urlRequest[4]).getName());
-                }
+        String url = request.getRequestURI();
+        Map<String, String[]> param = request.getParameterMap();
+        String[] urlRequest = url.split("/");
+        if (this.putInUrl(urlRequest)) {
+            this.doPost(request, response);
+        } else if (this.postInUrl(urlRequest)) {
+            this.doPost(request, response);
+        } else if (this.deleteInUrl(urlRequest)) {
+            this.doPost(request, response);
+        } else if (urlRequest[2].equals("GET")) {
+            if (urlRequest.length == 3) {
+                response.getWriter().write(autoService.getAllAuto().toString());
             }
+            if (urlRequest[3].equals("vin")) {
+                response.getWriter().write(autoService.getServiceCompanyToVin(urlRequest[4]).getName());
+            }
+        }
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -57,49 +52,32 @@ public class AutoServlet extends HttpServlet {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
 
-    if(this.postInUrl(urlRequest))
-    {
-        if (this.postVinUrl(urlRequest))
-        {
-            if (urlRequest[4].length() == 17)
-            {
-            if (!this.doesCarExistServlet(urlRequest))
-                {
-                    if (!this.doesCarToServiceCompanyServlet(urlRequest))
-                    {
-                        response.getWriter().write("The vehicle has been successfully added to the database." + urlRequest[5] + "\n");
-                        autoService.addAuto(urlRequest[4], urlRequest[5]);
-                    }
-                    else
-                    {
-                        response.getWriter().write("This service company does not exist, the car has not been added." + "\n");
-                    }
+        if (this.postInUrl(urlRequest)) {
+            if (this.postVinUrl(urlRequest)) {
+                if (urlRequest[4].length() == 17) {
+                    if (!this.doesCarExistServlet(urlRequest)) {
+                        if (!this.doesCarToServiceCompanyServlet(urlRequest)) {
+                            response.getWriter().write("The vehicle has been successfully added to the database." + urlRequest[5] + "\n");
+                            autoService.addAuto(urlRequest[4], urlRequest[5]);
+                        } else {
+                            response.getWriter().write("This service company does not exist, the car has not been added." + "\n");
+                        }
 
+                    } else {
+                        response.getWriter().write("This VIN is already in the car database" + "\n");
+                    }
                 }
-                else
-                {
-                    response.getWriter().write("This VIN is already in the car database" + "\n");
-                }
+            } else {
+                response.getWriter().write("Error" + "\n");
             }
-        }
-        else
-        {
-            response.getWriter().write("Error" + "\n");
-        }
-    }
-    else if (this.deleteInUrl(urlRequest))
-    {
-        if(urlRequest.length >=4)
-        {
-            response.getWriter().print(autoService.deleteAuto(urlRequest[3]));
-        }
-        else
-        {
+        } else if (this.deleteInUrl(urlRequest)) {
+            if (urlRequest.length >= 4) {
+                response.getWriter().print(autoService.deleteAuto(urlRequest[3]));
+            } else {
 
-        }
-    }else if (this.putInUrl(urlRequest))
-        {
-        response.getWriter().print(autoService.updateAuto(urlRequest[3], urlRequest[4]));
+            }
+        } else if (this.putInUrl(urlRequest)) {
+            response.getWriter().print(autoService.updateAuto(urlRequest[3], urlRequest[4]));
         }
     }
     public boolean getInUrl(String[] urlRequest)

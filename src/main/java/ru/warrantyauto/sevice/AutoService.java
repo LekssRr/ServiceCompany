@@ -17,28 +17,27 @@ public class AutoService implements IAutoService {
 
     DBConnectionProvider dbConnectionProvider;
     final AutoRepository autoRepository;
-    final ServiceCompanyRepository  serviceCompanyRepository;
-    public AutoService(DBConnectionProvider newDbConnectionProvider)
-    {
+    final ServiceCompanyRepository serviceCompanyRepository;
+
+    public AutoService(DBConnectionProvider newDbConnectionProvider) {
         dbConnectionProvider = newDbConnectionProvider;
         autoRepository = new AutoRepository(newDbConnectionProvider);
         serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
     }
+
     @Override
-    public boolean deleteAuto(String vin)
-    {
+    public boolean deleteAuto(String vin) {
         AutoEntity deleteAuto = new AutoEntity(vin, autoRepository.get(vin), new ServiceCompanyEntity(autoRepository.get(vin)));
         serviceCompanyRepository.deleteVinToServiceCompany(deleteAuto);
         return autoRepository.delete(deleteAuto);
     }
+
     @Override
-    public boolean addAuto(String newVin, String nameServiceCompany)
-    {
+    public boolean addAuto(String newVin, String nameServiceCompany) {
         boolean res = false;
         ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
-        if(!setServiceCompany.add(nameServiceCompany))
-        {
+        if (!setServiceCompany.add(nameServiceCompany)) {
             AutoEntity newAuto = new AutoEntity(newVin, nameServiceCompany, new ServiceCompanyEntity(nameServiceCompany));
             autoRepository.create(newAuto);
             res = serviceCompanyRepository.addVinToServiceCompany(newAuto);
@@ -53,31 +52,30 @@ public class AutoService implements IAutoService {
     }
 
     @Override
-    public List<AutoDTO> getAllAuto(){
+    public List<AutoDTO> getAllAuto() {
         List<AutoDTO> result = new ArrayList<>();
         List<String> resultString = new ArrayList<>(autoRepository.getAllAutoVin());
-        for (int i = 0; i<= resultString.size()-1; i++)
-        {
+        for (int i = 0; i <= resultString.size() - 1; i++) {
             result.add(new AutoDTO(resultString.get(i).toString()));
         }
         return result;
-    };
+    }
+
+    ;
+
     @Override
-    public boolean doesCarExist(String autoVin)
-    {
+    public boolean doesCarExist(String autoVin) {
         boolean resulat = false;
-        for(int i = 0; i<=autoRepository.getAllAutoVin().size()-1; i++)
-        {
-            if(autoRepository.getAllAutoVin().get(i).equals(autoVin))
-            {
+        for (int i = 0; i <= autoRepository.getAllAutoVin().size() - 1; i++) {
+            if (autoRepository.getAllAutoVin().get(i).equals(autoVin)) {
                 resulat = true;
             }
         }
         return resulat;
     }
+
     @Override
-    public boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany)
-    {
+    public boolean doesCarToServiceCompany(String autoVin, String nameServiceCompany) {
         AutoEntity newAuto = new AutoEntity(autoVin, nameServiceCompany, new ServiceCompanyEntity(nameServiceCompany));
         return autoRepository.doesCarToServiceCompanyRepository(newAuto);
     }

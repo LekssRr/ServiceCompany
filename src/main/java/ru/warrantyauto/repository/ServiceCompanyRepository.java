@@ -11,76 +11,72 @@ import java.util.List;
 public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity, List<String>>, RepositoryServiceCompany{
 
     DBConnectionProvider dbConnectionProvider;
-    public ServiceCompanyRepository(DBConnectionProvider newDbConnectionProvider)
-    {
-        dbConnectionProvider = newDbConnectionProvider;
-        createCustomersTableIfNotExistsServiceCompany();
+    CreateTable createTable;
+
+    public ServiceCompanyRepository(DBConnectionProvider newDbConnectionProvider) {
+        this.dbConnectionProvider = newDbConnectionProvider;
+        createTable = new CreateTable(newDbConnectionProvider);
+        createTable.createCustomersTableIfNotExistsServiceCompany();
     }
+
     @Override
-    public boolean create(ServiceCompanyEntity serviceCompany)
-    {
+    public boolean create(ServiceCompanyEntity serviceCompany) {
         boolean result = false;
-        try(Connection conn = dbConnectionProvider.getConnection())
-        {
+        try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String SeviceCompanyName = serviceCompany.getName();
             List<String> vinToServicCompany = this.getAllAutoToServiceCompany(serviceCompany);
             vinToServicCompany.addAll(serviceCompany.allVinAuto());
-            for (int i = 0; i<=vinToServicCompany.size()-1; i++)
-            {
+            for (int i = 0; i <= vinToServicCompany.size() - 1; i++) {
                 vinToServicCompany.set(i, "\"" + vinToServicCompany.get(i) + "\"");
             }
             String sqlArray = vinToServicCompany.toString().replace(']', '}');
             sqlArray = sqlArray.replace('[', '{');
             result = true;
-            String sql = "INSERT INTO \"ServiceCompany\"(\"ServiceCompany\", \"VinList\") VALUES ('" + SeviceCompanyName + "'," + "'" + sqlArray + "')" ;
+            String sql = "INSERT INTO \"ServiceCompany\"(\"ServiceCompany\", \"VinList\") VALUES ('" + SeviceCompanyName + "'," + "'" + sqlArray + "')";
             System.out.println(sql);
             statement.executeUpdate(sql);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
         return result;
 
-    };
+    }
+
+    ;
+
     @Override
-    public boolean update(ServiceCompanyEntity serviceCompany)
-    {
+    public boolean update(ServiceCompanyEntity serviceCompany) {
         boolean result = false;
-        try(Connection conn = dbConnectionProvider.getConnection())
-        {
+        try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String serviceCompanyName = serviceCompany.getName();
             ArrayList<String> newVinListServiceCompany = new ArrayList<>();
             newVinListServiceCompany.addAll(serviceCompany.allVinAuto());
 
-            for (int i = 0; i<=newVinListServiceCompany.size()-1; i++)
-            {
+            for (int i = 0; i <= newVinListServiceCompany.size() - 1; i++) {
                 newVinListServiceCompany.set(i, "\"" + newVinListServiceCompany.get(i) + "\"");
             }
 
             String updateSQLVinList = newVinListServiceCompany.toString().replace(']', '}');
             updateSQLVinList = updateSQLVinList.replace('[', '{');
-            String sql = "UPDATE \"ServiceCompany\" SET \"VinList\" = '" + updateSQLVinList +"'" + "WHERE \"ServiceCompany\" = '" + serviceCompanyName + "'\n";
+            String sql = "UPDATE \"ServiceCompany\" SET \"VinList\" = '" + updateSQLVinList + "'" + "WHERE \"ServiceCompany\" = '" + serviceCompanyName + "'\n";
             statement.executeUpdate(sql);
             result = true;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
         return result;
     }
+
     @Override
-    public boolean delete(ServiceCompanyEntity serviceCompany)
-    {
+    public boolean delete(ServiceCompanyEntity serviceCompany) {
         boolean result = false;
-        try(Connection conn = dbConnectionProvider.getConnection())
-        {
+        try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String serviceCompanyName = serviceCompany.getName();
             String sql = "DELETE FROM \"ServiceCompany\" WHERE \"ServiceCompany\" =" + "'" + serviceCompanyName + "'";
             statement.executeUpdate(sql);
             result = true;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
         return result;
     }
@@ -91,15 +87,12 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
 
         List<String> res = new ArrayList<>();
         String stringResult = null;
-        //System.out.print(serviceCompany.getName());
-        try(Connection conn = dbConnectionProvider.getConnection())
-        {
+        try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String nameServiceCompany = serviceCompany.getName();
-            String sql= "SELECT \"VinList\" FROM \"ServiceCompany\" WHERE \"ServiceCompany\" = '" + nameServiceCompany + "'";
+            String sql = "SELECT \"VinList\" FROM \"ServiceCompany\" WHERE \"ServiceCompany\" = '" + nameServiceCompany + "'";
             ResultSet rs = statement.executeQuery(sql);
-            while (rs.next())
-            {
+            while (rs.next()) {
                 String resString = rs.getArray(1).toString();
                 resString = resString.replace('{', ' ');
                 resString = resString.replace('}', ' ');
@@ -107,17 +100,15 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
                 String[] arrayList = resString.split(",");
                 Collections.addAll(res, arrayList);
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
         return res;
     }
-    public boolean addAutoToServiceCompany(AutoEntity newAuto)
-    {
+
+    public boolean addAutoToServiceCompany(AutoEntity newAuto) {
         boolean res = false;
 
-        try(Connection conn = dbConnectionProvider.getConnection())
-        {
+        try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String nameServiceCompany = newAuto.getNameServiceCompany();
             List<String> vinToServicCompany = this.getAllAutoToServiceCompany(new ServiceCompanyEntity(nameServiceCompany));
@@ -125,25 +116,21 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
             this.delete(new ServiceCompanyEntity(nameServiceCompany));
             this.create(new ServiceCompanyEntity(nameServiceCompany));
             res = true;
-            //ResultSet rs = statement.executeQuery(sql);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
         return res;
     }
+
     @Override
     public List<String> getAllServiceCompany() {
         List<String> res = new ArrayList<>();
         String stringResult = null;
 
-        try(Connection conn = dbConnectionProvider.getConnection())
-        {
+        try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
-            String sql= "SELECT \"ServiceCompany\" FROM \"ServiceCompany\"";
-            System.out.println(sql);
+            String sql = "SELECT \"ServiceCompany\" FROM \"ServiceCompany\"";
             ResultSet rs = statement.executeQuery(sql);
-            while (rs.next())
-            {
+            while (rs.next()) {
                 String resString = rs.getArray(1).toString();
                 resString = resString.replace('{', ' ');
                 resString = resString.replace('}', ' ');
@@ -151,78 +138,64 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
                 String[] arrayList = resString.split(",");
                 Collections.addAll(res, arrayList);
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
         return res;
     }
-    public boolean deleteAllServiceCompany()
-    {
+
+    public boolean deleteAllServiceCompany() {
         boolean res = false;
 
-        try(Connection conn = dbConnectionProvider.getConnection())
-        {
+        try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
-            String sql= "DELETE FROM \"ServiceCompany\"";
+            String sql = "DELETE FROM \"ServiceCompany\"";
             res = true;
             ResultSet rs = statement.executeQuery(sql);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
         }
         return res;
     }
 
-    public ServiceCompanyEntity getServiceCompanyToName(String nameServiceCompany)
-    {
+    public ServiceCompanyEntity getServiceCompanyToName(String nameServiceCompany) {
         ServiceCompanyEntity result = null;
-        for(int i = 0; i<= this.getAllServiceCompany().size()-1; i++)
-        {
+        for (int i = 0; i <= this.getAllServiceCompany().size() - 1; i++) {
             getAllServiceCompany().get(i).equals(nameServiceCompany);
             result = new ServiceCompanyEntity(nameServiceCompany);
         }
         return result;
     }
-    public boolean addVinToServiceCompany(AutoEntity newAuto)
-    {
+
+    public boolean addVinToServiceCompany(AutoEntity newAuto) {
         ServiceCompanyEntity cahsServiceCompany = new ServiceCompanyEntity(newAuto.getNameServiceCompany());
         ArrayList<String> cashVin = new ArrayList<>(this.getAllAutoToServiceCompany(cahsServiceCompany));
         this.delete(getServiceCompanyToName(newAuto.getNameServiceCompany()));
         ArrayList<String> newVinList = new ArrayList<>();
-        if(cashVin.size()!=0)
-        {
-            if(cashVin.get(0).equals(""))
-            {
+        if (cashVin.size() != 0) {
+            if (cashVin.get(0).equals("")) {
                 newVinList.add(newAuto.getVin());
-            }
-            else
-            {
-                for(int i = 0; i<=cashVin.size()-1; i++)
-                {
-                    if(!cashVin.get(i).equals(""))
-                    {
+            } else {
+                for (int i = 0; i <= cashVin.size() - 1; i++) {
+                    if (!cashVin.get(i).equals("")) {
                         newVinList.add(cashVin.get(i));
                     }
                 }
                 newVinList.add(newAuto.getVin());
             }
-        }
-        else
-        {
+        } else {
             newVinList.add(newAuto.getVin());
         }
         cahsServiceCompany.setAllVin(newVinList);
         return this.create(cahsServiceCompany);
     }
+
     public boolean deleteVinToServiceCompany(AutoEntity newAuto) {
-        boolean result =false;
+        boolean result = false;
         ServiceCompanyEntity cahsServiceCompany = new ServiceCompanyEntity(newAuto.getNameServiceCompany());
         ArrayList<String> cashVin = new ArrayList<>(this.getAllAutoToServiceCompany(cahsServiceCompany));
         this.delete(getServiceCompanyToName(newAuto.getNameServiceCompany()));
         ArrayList<String> newVinList = new ArrayList<>();
-        for(int i = 0; i<=cashVin.size()-1; i++)
-        {
-            if(cashVin.get(i).equals(newAuto.getVin()))
-            {
+        for (int i = 0; i <= cashVin.size() - 1; i++) {
+            if (cashVin.get(i).equals(newAuto.getVin())) {
                 cashVin.remove(i);
                 result = true;
             }
@@ -231,25 +204,12 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
         this.create(cahsServiceCompany);
         return result;
     }
-    public boolean updateServiceCompany(ServiceCompanyEntity oldCompany, ServiceCompanyEntity newCompany)
-    {
+
+    public boolean updateServiceCompany(ServiceCompanyEntity oldCompany, ServiceCompanyEntity newCompany) {
         ArrayList<String> cashBaseVin = new ArrayList<>(this.getAllAutoToServiceCompany(new ServiceCompanyEntity(oldCompany.getName())));
         this.delete(oldCompany);
         newCompany.setAllVin(cashBaseVin);
         this.create(newCompany);
         return true;
-    }
-    private void createCustomersTableIfNotExistsServiceCompany(){
-        try (Connection conn = this.dbConnectionProvider.getConnection())
-        {
-            PreparedStatement pstmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS \"ServiceCompany\"(\n" +
-                            "    \"ServiceCompany\" character varying NOT NULL primary key,\n" +
-                            "    \"VinList\" text[]\n" +
-                            ")");
-            pstmt.execute();
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
