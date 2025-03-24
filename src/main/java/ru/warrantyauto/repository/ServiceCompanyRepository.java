@@ -31,6 +31,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
             result = true;
             preparedStatement.executeUpdate();
         } catch (Exception ex) {
+            System.out.println("ServiceCompanyRepository Exception::create");
         }
         return result;
 
@@ -48,6 +49,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
             preparedStatement.executeUpdate();
             result = true;
         } catch (Exception ex) {
+            System.out.println("ServiceCompanyRepository Exception::update");
         }
         return result;
     }
@@ -63,6 +65,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
             preparedStatement.executeUpdate();
             result = true;
         } catch (Exception ex) {
+            System.out.println("ServiceCompanyRepository Exception::delete");
         }
         return result;
     }
@@ -88,6 +91,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
                 Collections.addAll(res, arrayList);
             }
         } catch (Exception ex) {
+            System.out.println("ServiceCompanyRepository Exception::getAllAutoToServiceCompany");
         }
         return res;
     }
@@ -108,6 +112,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
                 Collections.addAll(res, arrayList);
             }
         } catch (Exception ex) {
+            System.out.println("ServiceCompanyRepository Exception::getAllServiceCompany");
         }
         return res;
     }
@@ -121,6 +126,7 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
             res = true;
             ResultSet rs = statement.executeQuery(sql);
         } catch (Exception ex) {
+            System.out.println("ServiceCompanyRepository Exception::deleteAllServiceCompany");
         }
         return res;
     }

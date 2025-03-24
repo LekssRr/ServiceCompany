@@ -35,6 +35,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
             result = true;
             preparedStatement.executeUpdate();
         } catch (Exception ex) {
+            System.out.println("AutoRepository Exception::create");
         }
         return result;
     }
@@ -52,6 +53,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
             preparedStatement.executeUpdate();
             result = true;
         } catch (Exception ex) {
+            System.out.println("AutoRepository Exception::update");
         }
         return result;
     }
@@ -65,6 +67,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
             preparedStatement.executeUpdate();
             return true;
         } catch (Exception ex) {
+            System.out.println("AutoRepository Exception::delete");
         }
         return false;
     }
@@ -84,7 +87,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
             }
         }
         catch(Exception ex){
-
+            System.out.println("AutoRepository Exception::get");
         }
         return res;
     }
@@ -100,7 +103,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
                 result.add(rs.getString("NameServiceCompany"));
             }
         } catch (Exception ex) {
-
+            System.out.println("AutoRepository Exception::getAllAutoServiceCompany");
         }
         return result;
     }
@@ -117,7 +120,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
             }
             return result;
         } catch (Exception ex) {
-
+            System.out.println("AutoRepository Exception::getAllAutoVin");
         }
         return null;
     }
@@ -131,7 +134,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
             ResultSet rs = statement.executeQuery(sql);
 
         } catch (Exception ex) {
-
+            System.out.println("AutoRepository Exception::deleteAll");
         }
         return result;
     }
