@@ -28,9 +28,12 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
             Statement statement = conn.createStatement();
             String autoVin = auto.getVin();
             String nameServiceCompany = auto.getNameServiceCompany();
-            String sql = "INSERT INTO \"Auto\" (\"Vin\", \"NameServiceCompany\") VALUES (" + "'" + autoVin + "'" + ", " + "'" + nameServiceCompany + "'" + ")";
+            String sql = "INSERT INTO \"Auto\" (\"Vin\", \"NameServiceCompany\") VALUES ( ?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, autoVin);
+            preparedStatement.setString(2, nameServiceCompany);
             result = true;
-            statement.executeUpdate(sql);
+            preparedStatement.executeUpdate();
         } catch (Exception ex) {
         }
         return result;
@@ -42,12 +45,11 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
     public boolean update(AutoEntity auto) {
         boolean result = false;
         try (Connection conn = dbConnectionProvider.getConnection()) {
-            Statement statement = conn.createStatement();
-            String autoVin = auto.getVin();
-            String newNameServiceCompany = auto.getNameServiceCompany();
-
-            String sql = "UPDATE  \"Auto\" SET \"NameServiceCompany\" =" + "'" + newNameServiceCompany + "' " + "WHERE \"Vin\" = '" + autoVin + "'";
-            statement.executeUpdate(sql);
+            String sql = "UPDATE  \"Auto\" SET \"NameServiceCompany\" = ? WHERE \"Vin\" = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, auto.getNameServiceCompany());
+            preparedStatement.setString(2, auto.getVin());
+            preparedStatement.executeUpdate();
             result = true;
         } catch (Exception ex) {
         }
@@ -57,9 +59,10 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
     @Override
     public boolean delete(AutoEntity auto) {
         try (Connection conn = dbConnectionProvider.getConnection()) {
-            Statement statement = conn.createStatement();
-            String autoVin = auto.getVin();
-            statement.executeUpdate("DELETE FROM \"Auto\" WHERE \"Vin\" = '" + autoVin + "'");
+            String sql = "DELETE FROM \"Auto\" WHERE \"Vin\" = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, auto.getVin());
+            preparedStatement.executeUpdate();
             return true;
         } catch (Exception ex) {
         }
@@ -71,17 +74,14 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
         String res = null;
         try(Connection conn = dbConnectionProvider.getConnection())
         {
-            Statement statement = conn.createStatement();
-
-            String sql= "SELECT \"NameServiceCompany\" FROM \"Auto\" WHERE \"Vin\" = '" + vin + "'";
-            System.out.println(sql);
-            statement.executeQuery(sql).toString();
-            ResultSet rs = statement.executeQuery(sql);
+            String sql1 = "SELECT \"NameServiceCompany\" FROM \"Auto\" WHERE \"Vin\" = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql1);
+            preparedStatement.setString(1, vin);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next())
             {
                 res = rs.getString(1);
             }
-
         }
         catch(Exception ex){
 
@@ -95,7 +95,6 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
         try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String sql = "SELECT \"NameServiceCompany\" FROM \"Auto\"";
-
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 result.add(rs.getString("NameServiceCompany"));
@@ -126,7 +125,6 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
     public boolean deleteAll() {
         boolean result = false;
         try (Connection conn = dbConnectionProvider.getConnection()) {
-
             Statement statement = conn.createStatement();
             String sql = "DELETE FROM \"Auto\"";
             result = true;
