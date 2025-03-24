@@ -23,44 +23,29 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
     public boolean create(ServiceCompanyEntity serviceCompany) {
         boolean result = false;
         try (Connection conn = dbConnectionProvider.getConnection()) {
-            Statement statement = conn.createStatement();
             String SeviceCompanyName = serviceCompany.getName();
-            List<String> vinToServicCompany = this.getAllAutoToServiceCompany(serviceCompany);
-            vinToServicCompany.addAll(serviceCompany.allVinAuto());
-            for (int i = 0; i <= vinToServicCompany.size() - 1; i++) {
-                vinToServicCompany.set(i, "\"" + vinToServicCompany.get(i) + "\"");
-            }
-            String sqlArray = vinToServicCompany.toString().replace(']', '}');
-            sqlArray = sqlArray.replace('[', '{');
+            String sql = "INSERT INTO \"ServiceCompany\"(\"ServiceCompany\", \"VinList\") VALUES (?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, SeviceCompanyName);
+            preparedStatement.setArray(2, conn.createArrayOf("text", serviceCompany.allVinAuto().toArray()));
             result = true;
-            String sql = "INSERT INTO \"ServiceCompany\"(\"ServiceCompany\", \"VinList\") VALUES ('" + SeviceCompanyName + "'," + "'" + sqlArray + "')";
-            System.out.println(sql);
-            statement.executeUpdate(sql);
+            preparedStatement.executeUpdate();
         } catch (Exception ex) {
         }
         return result;
 
     }
 
-    ;
-
     @Override
     public boolean update(ServiceCompanyEntity serviceCompany) {
         boolean result = false;
         try (Connection conn = dbConnectionProvider.getConnection()) {
-            Statement statement = conn.createStatement();
             String serviceCompanyName = serviceCompany.getName();
-            ArrayList<String> newVinListServiceCompany = new ArrayList<>();
-            newVinListServiceCompany.addAll(serviceCompany.allVinAuto());
-
-            for (int i = 0; i <= newVinListServiceCompany.size() - 1; i++) {
-                newVinListServiceCompany.set(i, "\"" + newVinListServiceCompany.get(i) + "\"");
-            }
-
-            String updateSQLVinList = newVinListServiceCompany.toString().replace(']', '}');
-            updateSQLVinList = updateSQLVinList.replace('[', '{');
-            String sql = "UPDATE \"ServiceCompany\" SET \"VinList\" = '" + updateSQLVinList + "'" + "WHERE \"ServiceCompany\" = '" + serviceCompanyName + "'\n";
-            statement.executeUpdate(sql);
+            String sql1 = "UPDATE \"ServiceCompany\" SET \"VinList\" = ? WHERE \"ServiceCompany\" = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql1);
+            preparedStatement.setArray(1, conn.createArrayOf("text", serviceCompany.allVinAuto().toArray()));
+            preparedStatement.setString(2, serviceCompanyName);
+            preparedStatement.executeUpdate();
             result = true;
         } catch (Exception ex) {
         }
@@ -71,10 +56,11 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
     public boolean delete(ServiceCompanyEntity serviceCompany) {
         boolean result = false;
         try (Connection conn = dbConnectionProvider.getConnection()) {
-            Statement statement = conn.createStatement();
+            String sql = "DELETE FROM \"ServiceCompany\" WHERE \"ServiceCompany\" = ?";
             String serviceCompanyName = serviceCompany.getName();
-            String sql = "DELETE FROM \"ServiceCompany\" WHERE \"ServiceCompany\" =" + "'" + serviceCompanyName + "'";
-            statement.executeUpdate(sql);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, serviceCompanyName);
+            preparedStatement.executeUpdate();
             result = true;
         } catch (Exception ex) {
         }
@@ -86,12 +72,13 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
     public List<String> getAllAutoToServiceCompany(ServiceCompanyEntity serviceCompany) {
 
         List<String> res = new ArrayList<>();
-        String stringResult = null;
         try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String nameServiceCompany = serviceCompany.getName();
-            String sql = "SELECT \"VinList\" FROM \"ServiceCompany\" WHERE \"ServiceCompany\" = '" + nameServiceCompany + "'";
-            ResultSet rs = statement.executeQuery(sql);
+            String sql1 = "SELECT \"VinList\" FROM \"ServiceCompany\" WHERE \"ServiceCompany\" = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql1);
+            preparedStatement.setString(1, nameServiceCompany);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 String resString = rs.getArray(1).toString();
                 resString = resString.replace('{', ' ');
@@ -105,27 +92,9 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
         return res;
     }
 
-    public boolean addAutoToServiceCompany(AutoEntity newAuto) {
-        boolean res = false;
-
-        try (Connection conn = dbConnectionProvider.getConnection()) {
-            Statement statement = conn.createStatement();
-            String nameServiceCompany = newAuto.getNameServiceCompany();
-            List<String> vinToServicCompany = this.getAllAutoToServiceCompany(new ServiceCompanyEntity(nameServiceCompany));
-            vinToServicCompany.add(newAuto.getVin());
-            this.delete(new ServiceCompanyEntity(nameServiceCompany));
-            this.create(new ServiceCompanyEntity(nameServiceCompany));
-            res = true;
-        } catch (Exception ex) {
-        }
-        return res;
-    }
-
     @Override
     public List<String> getAllServiceCompany() {
         List<String> res = new ArrayList<>();
-        String stringResult = null;
-
         try (Connection conn = dbConnectionProvider.getConnection()) {
             Statement statement = conn.createStatement();
             String sql = "SELECT \"ServiceCompany\" FROM \"ServiceCompany\"";
