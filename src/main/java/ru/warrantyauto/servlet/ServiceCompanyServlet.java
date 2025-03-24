@@ -5,17 +5,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ru.warrantyauto.filereader.FileReaderBD;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.sevice.ServiceCompanySevice;
+
+
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/ServiceCompany/*"})
 public class ServiceCompanyServlet extends HttpServlet {
-    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-    String user = "postgres";
-    String password = "2112";
-
-    private final ServiceCompanySevice serviceCompanyService = new ServiceCompanySevice(new DBConnectionProvider(url, user,password));
+    final FileReaderBD fileReaderBD = new FileReaderBD();
+    private final ServiceCompanySevice serviceCompanyService = new ServiceCompanySevice(new DBConnectionProvider(fileReaderBD.getStringInFileToIndex(0), fileReaderBD.getStringInFileToIndex(1), fileReaderBD.getStringInFileToIndex(2)));
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,6 +37,7 @@ public class ServiceCompanyServlet extends HttpServlet {
             doPost(request, response);
         }
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = request.getRequestURI();
@@ -68,21 +69,22 @@ public class ServiceCompanyServlet extends HttpServlet {
 
         }
     }
-    public boolean getInUrl(String[] urlRequest)
-    {
+
+    public boolean getInUrl(String[] urlRequest) {
         return urlRequest[2].equals("GET");
     }
-    public boolean postInUrl(String[] urlRequest)
-    {
+
+    public boolean postInUrl(String[] urlRequest) {
         return urlRequest[2].equals("POST");
     }
-    public boolean deleteInUrl(String[] urlRequest)
-    {
+
+    public boolean deleteInUrl(String[] urlRequest) {
         return urlRequest[2].equals("DELETE");
     }
-    public boolean putInUrl(String[] urlRequest)
-    {
+
+    public boolean putInUrl(String[] urlRequest) {
         return urlRequest[2].equals("PUT");
     }
+
 }
 

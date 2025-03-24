@@ -6,24 +6,27 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.warrantyauto.entity.AutoEntity;
+import ru.warrantyauto.filereader.FileReaderBD;
 import ru.warrantyauto.repository.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Scanner;
 
 @WebServlet(urlPatterns = {"/Auto/*"})
 public class AutoServlet extends HttpServlet {
+    final FileReaderBD fileReaderBD = new FileReaderBD();
+    private final AutoService autoService = new AutoService(new DBConnectionProvider(fileReaderBD.getStringInFileToIndex(0), fileReaderBD.getStringInFileToIndex(1), fileReaderBD.getStringInFileToIndex(2)));
 
-    String url = "jdbc:postgresql://localhost:5432/auto_dealer";
-    String user = "postgres";
-    String password = "2112";
-    private AutoEntity auto;
-    private AutoService autoService = new AutoService(new DBConnectionProvider(url, user, password));
     @Override
     public void init() {
 
     }
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -45,10 +48,10 @@ public class AutoServlet extends HttpServlet {
             }
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
 
@@ -80,33 +83,32 @@ public class AutoServlet extends HttpServlet {
             response.getWriter().print(autoService.updateAuto(urlRequest[3], urlRequest[4]));
         }
     }
-    public boolean getInUrl(String[] urlRequest)
-    {
+
+    public boolean getInUrl(String[] urlRequest) {
         return urlRequest[2].equals("GET");
     }
-    public boolean postInUrl(String[] urlRequest)
-    {
+
+    public boolean postInUrl(String[] urlRequest) {
         return urlRequest[2].equals("POST");
     }
-    public boolean deleteInUrl(String[] urlRequest)
-    {
+
+    public boolean deleteInUrl(String[] urlRequest) {
         return urlRequest[2].equals("DELETE");
     }
-    public boolean putInUrl(String[] urlRequest)
-    {
+
+    public boolean putInUrl(String[] urlRequest) {
         return urlRequest[2].equals("PUT");
     }
 
-    public boolean postVinUrl(String[] urlRequest)
-    {
+    public boolean postVinUrl(String[] urlRequest) {
         return urlRequest[3].equals("vin");
     }
-    public boolean doesCarExistServlet(String[] urlRequest)
-    {
+
+    public boolean doesCarExistServlet(String[] urlRequest) {
         return autoService.doesCarExist(urlRequest[4]);
     }
-    private boolean doesCarToServiceCompanyServlet(String[] urlRequest)
-    {
+
+    private boolean doesCarToServiceCompanyServlet(String[] urlRequest) {
         return autoService.doesCarToServiceCompany(urlRequest[4], urlRequest[5]);
     }
 }
