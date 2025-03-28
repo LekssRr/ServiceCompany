@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.warrantyauto.filereader.FileReaderBD;
+
 import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 
@@ -14,7 +14,6 @@ import java.util.*;
 
 @WebServlet(urlPatterns = {"/Auto/*"})
 public class AutoServlet extends HttpServlet {
-    final FileReaderBD fileReaderBD = new FileReaderBD();
     DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
     private final AutoService autoService;
 

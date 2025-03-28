@@ -31,7 +31,6 @@ public class DBConnectionProvider {
     }
 
     public String getStringInFileToIndex(int Index) {
-
         URI uri;
         String fileScan;
         try {

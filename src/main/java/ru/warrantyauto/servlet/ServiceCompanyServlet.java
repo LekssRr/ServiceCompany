@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.warrantyauto.filereader.FileReaderBD;
+
 import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.sevice.ServiceCompanySevice;
 
@@ -14,7 +14,6 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/ServiceCompany/*"})
 public class ServiceCompanyServlet extends HttpServlet {
-    final FileReaderBD fileReaderBD = new FileReaderBD();
     DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
     private final ServiceCompanySevice serviceCompanyService;
 
