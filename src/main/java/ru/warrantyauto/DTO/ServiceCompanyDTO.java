@@ -1,10 +1,8 @@
 package ru.warrantyauto.DTO;
 
-import ru.warrantyauto.entity.AutoEntity;
-
 import java.util.ArrayList;
 
-public class ServiceCompanyDTO extends DTO{
+public class ServiceCompanyDTO {
     String name;
     ArrayList<AutoDTO> allAuto = new ArrayList<>();
     ArrayList<String> allVin = new ArrayList<>();

@@ -2,8 +2,7 @@ package ru.warrantyauto.DTO;
 
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 
-public class AutoDTO extends DTO
-{
+public class AutoDTO {
     private String vinCode;
     private String nameServiceCompany;
     private ServiceCompanyEntity serviceCompan;

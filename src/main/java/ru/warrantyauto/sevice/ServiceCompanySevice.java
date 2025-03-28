@@ -4,7 +4,7 @@ import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 import ru.warrantyauto.repository.AutoRepository;
-import ru.warrantyauto.repository.DBConnectionProvider;
+import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.repository.ServiceCompanyRepository;
 
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package ru.warrantyauto.repository;
 
+import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 

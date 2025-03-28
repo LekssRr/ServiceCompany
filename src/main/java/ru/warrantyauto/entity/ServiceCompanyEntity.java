@@ -2,7 +2,7 @@ package ru.warrantyauto.entity;
 
 import java.util.ArrayList;
 
-public class ServiceCompanyEntity extends Entity {
+public class ServiceCompanyEntity {
 
     String name;
     ArrayList<AutoEntity> allAuto = new ArrayList<>();

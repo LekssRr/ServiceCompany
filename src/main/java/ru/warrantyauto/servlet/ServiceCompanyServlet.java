@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.warrantyauto.filereader.FileReaderBD;
-import ru.warrantyauto.repository.DBConnectionProvider;
+import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.sevice.ServiceCompanySevice;
 
 
@@ -15,7 +15,12 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/ServiceCompany/*"})
 public class ServiceCompanyServlet extends HttpServlet {
     final FileReaderBD fileReaderBD = new FileReaderBD();
-    private final ServiceCompanySevice serviceCompanyService = new ServiceCompanySevice(new DBConnectionProvider(fileReaderBD.getStringInFileToIndex(0), fileReaderBD.getStringInFileToIndex(1), fileReaderBD.getStringInFileToIndex(2)));
+    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
+    private final ServiceCompanySevice serviceCompanyService;
+
+    public ServiceCompanyServlet() {
+        this.serviceCompanyService = new ServiceCompanySevice(dbConnectionProvider);
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

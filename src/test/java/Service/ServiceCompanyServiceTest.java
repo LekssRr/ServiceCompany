@@ -5,7 +5,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import ru.warrantyauto.DTO.ServiceCompanyDTO;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
-import ru.warrantyauto.repository.DBConnectionProvider;
+import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 import ru.warrantyauto.sevice.ServiceCompanySevice;
 

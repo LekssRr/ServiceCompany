@@ -5,22 +5,22 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.filereader.FileReaderBD;
-import ru.warrantyauto.repository.DBConnectionProvider;
+import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.sevice.AutoService;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 @WebServlet(urlPatterns = {"/Auto/*"})
 public class AutoServlet extends HttpServlet {
     final FileReaderBD fileReaderBD = new FileReaderBD();
-    private final AutoService autoService = new AutoService(new DBConnectionProvider(fileReaderBD.getStringInFileToIndex(0), fileReaderBD.getStringInFileToIndex(1), fileReaderBD.getStringInFileToIndex(2)));
+    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
+    private final AutoService autoService;
+
+    public AutoServlet() {
+        this.autoService = new AutoService(dbConnectionProvider);
+    }
 
     @Override
     public void init() {
@@ -42,6 +42,7 @@ public class AutoServlet extends HttpServlet {
         } else if (urlRequest[2].equals("GET")) {
             if (urlRequest.length == 3) {
                 response.getWriter().write(autoService.getAllAuto().toString());
+
             }
             if (urlRequest[3].equals("vin")) {
                 response.getWriter().write(autoService.getServiceCompanyToVin(urlRequest[4]).getName());

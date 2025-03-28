@@ -1,14 +1,12 @@
 package ru.warrantyauto.entity;
 
-public class AutoEntity extends Entity {
+public class AutoEntity {
 
     private String vinCode;
-    private String nameServiceCompany;
     private ServiceCompanyEntity serviceCompan;
 
     public AutoEntity(String newVinCode, String newNameServiceCompany, ServiceCompanyEntity newServiceCompan) {
         this.vinCode = newVinCode;
-        this.nameServiceCompany = newNameServiceCompany;
         this.serviceCompan = newServiceCompan;
     }
 

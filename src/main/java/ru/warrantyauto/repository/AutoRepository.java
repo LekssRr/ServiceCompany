@@ -1,5 +1,6 @@
 package ru.warrantyauto.repository;
 
+import ru.warrantyauto.config.DBConnectionProvider;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
 
@@ -9,7 +10,6 @@ import java.util.List;
 
 public class AutoRepository implements Repository<AutoEntity, String>, RepositoryAuto{
 
-    private static Connection connection;
     DBConnectionProvider dbConnectionProvider;
     ServiceCompanyRepository serviceCompanyRepository;
     CreateTable createTable;

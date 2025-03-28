@@ -1,5 +1,7 @@
 package ru.warrantyauto.repository;
 
+import ru.warrantyauto.config.DBConnectionProvider;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
