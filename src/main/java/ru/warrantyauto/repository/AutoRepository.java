@@ -25,7 +25,6 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
     public boolean create(AutoEntity auto) {
         boolean result = false;
         try (Connection conn = dbConnectionProvider.getConnection()) {
-            Statement statement = conn.createStatement();
             String autoVin = auto.getVin();
             String nameServiceCompany = auto.getNameServiceCompany();
             String sql = "INSERT INTO \"Auto\" (\"Vin\", \"NameServiceCompany\") VALUES ( ?, ?)";
@@ -39,9 +38,7 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
         }
         return result;
     }
-
-    ;
-
+    
     @Override
     public boolean update(AutoEntity auto) {
         boolean result = false;

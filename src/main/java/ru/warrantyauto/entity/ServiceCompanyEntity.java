@@ -10,9 +10,6 @@ public class ServiceCompanyEntity {
 
     public ServiceCompanyEntity(String newName) {
         this.name = newName;
-        for (int i = 0; i <= allVin.size() - 1; i++) {
-            allAuto.add(new AutoEntity(allVin.get(i), this.getName(), this));
-        }
     }
 
     public String getName() {

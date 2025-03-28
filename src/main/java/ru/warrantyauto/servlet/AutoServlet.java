@@ -51,7 +51,7 @@ public class AutoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         String url = request.getRequestURI();
         String[] urlRequest = url.split("/");
 

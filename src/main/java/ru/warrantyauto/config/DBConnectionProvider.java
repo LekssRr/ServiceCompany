@@ -18,6 +18,7 @@ public class DBConnectionProvider {
     private final String url;
     private final String username;
     private final String password;
+    private static final  String bdconnect = "bdconnect.txt";
 
     public DBConnectionProvider(String url, String username, String password) {
         this.url = url;
@@ -34,7 +35,7 @@ public class DBConnectionProvider {
         URI uri;
         String fileScan;
         try {
-            uri = getClass().getResource(String.format("/%s", "bdconnect.txt")).toURI();
+            uri = getClass().getResource(String.format("/%s", bdconnect)).toURI();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -15,12 +15,11 @@ import java.util.Set;
 
 public class AutoService implements IAutoService {
 
-    DBConnectionProvider dbConnectionProvider;
     final AutoRepository autoRepository;
     final ServiceCompanyRepository serviceCompanyRepository;
 
     public AutoService(DBConnectionProvider newDbConnectionProvider) {
-        dbConnectionProvider = newDbConnectionProvider;
+
         autoRepository = new AutoRepository(newDbConnectionProvider);
         serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
     }
@@ -35,7 +34,6 @@ public class AutoService implements IAutoService {
     @Override
     public boolean addAuto(String newVin, String nameServiceCompany) {
         boolean res = false;
-        ServiceCompanyRepository serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
         Set<String> setServiceCompany = new HashSet<>(serviceCompanyRepository.getAllServiceCompany());
         if (!setServiceCompany.add(nameServiceCompany)) {
             AutoEntity newAuto = new AutoEntity(newVin, nameServiceCompany, new ServiceCompanyEntity(nameServiceCompany));

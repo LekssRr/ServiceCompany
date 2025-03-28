@@ -14,12 +14,10 @@ import java.util.Set;
 
 public class ServiceCompanySevice implements IServiceCompany {
 
-    DBConnectionProvider dbConnectionProvider;
     final ServiceCompanyRepository serviceCompanyRepository;
     final AutoRepository autoRepository;
 
     public ServiceCompanySevice(DBConnectionProvider newDbConnectionProvider) {
-        dbConnectionProvider = newDbConnectionProvider;
         this.serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
         this.autoRepository = new AutoRepository(newDbConnectionProvider);
     }
