@@ -18,15 +18,15 @@ public class AutoService implements IAutoService {
     final AutoRepository autoRepository;
     final ServiceCompanyRepository serviceCompanyRepository;
 
-    public AutoService(DBConnectionProvider newDbConnectionProvider) {
-
-        this.autoRepository = new AutoRepository(newDbConnectionProvider);
-        this.serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
-    }
     public AutoService()
     {
         this.autoRepository = new AutoRepository();
         this.serviceCompanyRepository = new ServiceCompanyRepository();
+    }
+    public AutoService(AutoRepository newAutoRep, ServiceCompanyRepository newSCRep)
+    {
+        this.autoRepository = newAutoRep;
+        this.serviceCompanyRepository = newSCRep;
     }
 
     @Override

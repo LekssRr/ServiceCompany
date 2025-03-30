@@ -20,7 +20,9 @@ public class ServiceCompanyServlet extends HttpServlet {
     public ServiceCompanyServlet() {
         this.serviceCompanyService = new ServiceCompanySevice();
     }
+    public ServiceCompanyServlet(ServiceCompanySevice serviceCompanySevice) {this.serviceCompanyService = serviceCompanySevice;
 
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

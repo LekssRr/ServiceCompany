@@ -1,6 +1,9 @@
 package Repository;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.testcontainers.containers.PostgreSQLContainer;
 import ru.warrantyauto.entity.AutoEntity;
 import ru.warrantyauto.entity.ServiceCompanyEntity;
@@ -10,10 +13,14 @@ import ru.warrantyauto.repository.ServiceCompanyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@ExtendWith(MockitoExtension.class)
 public class ServiceCompanyContainerTest {
+
+
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17");
+    @Mock
     AutoRepository autoRepository;
+    @Mock
     ServiceCompanyRepository serviceCompanyRepository;
     @BeforeAll
     static void beforeAll() {

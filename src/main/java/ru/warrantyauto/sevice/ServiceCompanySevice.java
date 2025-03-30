@@ -17,9 +17,10 @@ public class ServiceCompanySevice implements IServiceCompany {
     final ServiceCompanyRepository serviceCompanyRepository;
     final AutoRepository autoRepository;
 
-    public ServiceCompanySevice(DBConnectionProvider newDbConnectionProvider) {
-        this.serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
-        this.autoRepository = new AutoRepository(newDbConnectionProvider);
+    public ServiceCompanySevice(ServiceCompanyRepository newServiceCompanyRep, AutoRepository newAutoRep)
+    {
+        this.serviceCompanyRepository = newServiceCompanyRep;
+        this.autoRepository= newAutoRep;
     }
     public ServiceCompanySevice() {
         this.serviceCompanyRepository = new ServiceCompanyRepository();
@@ -73,7 +74,6 @@ public class ServiceCompanySevice implements IServiceCompany {
         if (!setServiceCompany.add(oldServiceCompanyName)) {
             ArrayList<String> vinList = new ArrayList<>(serviceCompanyRepository.getAllAutoToServiceCompany(new ServiceCompanyEntity(oldServiceCompanyName)));
 
-            System.out.println(vinList);
             serviceCompanyRepository.updateServiceCompany(new ServiceCompanyEntity(oldServiceCompanyName), new ServiceCompanyEntity(newServiceCompanyName));
             for (int i = 0; i < vinList.size(); i++) {
                 autoRepository.delete(new AutoEntity(vinList.get(i), oldServiceCompanyName, new ServiceCompanyEntity(oldServiceCompanyName)));

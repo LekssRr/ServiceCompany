@@ -20,7 +20,9 @@ public class AutoServlet extends HttpServlet {
     public AutoServlet() {
         this.autoService = new AutoService();
     }
-
+    public AutoServlet(AutoService service) {
+        this.autoService = service;
+    }
     @Override
     public void init() {
 
