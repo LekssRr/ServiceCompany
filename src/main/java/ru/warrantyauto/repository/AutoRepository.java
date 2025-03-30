@@ -20,6 +20,12 @@ public class AutoRepository implements Repository<AutoEntity, String>, Repositor
         createTable = new CreateTable(dbConnectionProvider);
         createTable.createCustomersTableIfNotExistsAuto();
     }
+    public AutoRepository() {
+        this.dbConnectionProvider = new DBConnectionProvider();
+        this.serviceCompanyRepository = new ServiceCompanyRepository(dbConnectionProvider);
+        createTable = new CreateTable(dbConnectionProvider);
+        createTable.createCustomersTableIfNotExistsAuto();
+    }
 
     @Override
     public boolean create(AutoEntity auto) {

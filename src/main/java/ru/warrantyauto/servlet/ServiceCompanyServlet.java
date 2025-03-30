@@ -14,11 +14,11 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/ServiceCompany/*"})
 public class ServiceCompanyServlet extends HttpServlet {
-    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
+
     private final ServiceCompanySevice serviceCompanyService;
 
     public ServiceCompanyServlet() {
-        this.serviceCompanyService = new ServiceCompanySevice(dbConnectionProvider);
+        this.serviceCompanyService = new ServiceCompanySevice();
     }
 
     @Override

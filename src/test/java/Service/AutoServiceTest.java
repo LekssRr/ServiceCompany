@@ -118,6 +118,4 @@ public class AutoServiceTest {
         autoService.deleteAuto("11111111111111115");
         serviceCompanySevice.deleteServiceCompany(serviceCompany.getName());
     }
-
-
 }

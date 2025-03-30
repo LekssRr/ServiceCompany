@@ -19,6 +19,12 @@ public class ServiceCompanyRepository implements Repository<ServiceCompanyEntity
         createTable = new CreateTable(newDbConnectionProvider);
         createTable.createCustomersTableIfNotExistsServiceCompany();
     }
+    public ServiceCompanyRepository()
+    {
+        this.dbConnectionProvider = new DBConnectionProvider();
+        createTable = new CreateTable(dbConnectionProvider);
+        createTable.createCustomersTableIfNotExistsServiceCompany();
+    }
 
     @Override
     public boolean create(ServiceCompanyEntity serviceCompany) {

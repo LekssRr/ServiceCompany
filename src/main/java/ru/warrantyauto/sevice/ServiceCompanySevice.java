@@ -21,6 +21,11 @@ public class ServiceCompanySevice implements IServiceCompany {
         this.serviceCompanyRepository = new ServiceCompanyRepository(newDbConnectionProvider);
         this.autoRepository = new AutoRepository(newDbConnectionProvider);
     }
+    public ServiceCompanySevice() {
+        this.serviceCompanyRepository = new ServiceCompanyRepository();
+        this.autoRepository = new AutoRepository();
+    }
+
 
     @Override
     public boolean addServiceCompany(String nameServiceCompany) {

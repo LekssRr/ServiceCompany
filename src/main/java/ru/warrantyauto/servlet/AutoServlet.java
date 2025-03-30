@@ -14,11 +14,11 @@ import java.util.*;
 
 @WebServlet(urlPatterns = {"/Auto/*"})
 public class AutoServlet extends HttpServlet {
-    DBConnectionProvider dbConnectionProvider = new DBConnectionProvider();
+
     private final AutoService autoService;
 
     public AutoServlet() {
-        this.autoService = new AutoService(dbConnectionProvider);
+        this.autoService = new AutoService();
     }
 
     @Override
